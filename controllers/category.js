@@ -11,6 +11,7 @@ const CategoryService = require("../services/category");
 */
 exports.createCategory = async (req, res, next) => {
     try {
+        req.body.user = req.user._id;
         const { error } = validateCategory(req.body);
         if (error) return JsonResponse(res, 400, error.details[0].message);
 
@@ -32,7 +33,7 @@ exports.getCategories = async (req, res, next) => {
     try {
         const { page, pageSize, skip } = paginate(req);
 
-        const { categories, total } = await CategoryService.getCategories(skip, pageSize, req.body.filter, "User")
+        const { categories, total } = await CategoryService.getCategories(skip, pageSize, req.body.filter)
 
         const meta = {
             total,
@@ -43,6 +44,7 @@ exports.getCategories = async (req, res, next) => {
 
         JsonResponse(res, 201, MSG_TYPES.FETCHED, categories, meta)
     } catch (error) {
+        console.log({error})
         JsonResponse(res, error.statusCode, error.msg)
         next(error)
     }

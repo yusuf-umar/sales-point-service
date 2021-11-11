@@ -10,8 +10,9 @@ class IngredientService {
             try {
                 const category = await Category.findOne({
                     user: body.user,
-                    category: body.category
+                    _id: body.category
                 })
+
                 if(!category){
                     reject({ statusCode: 404, msg: MSG_TYPES.NOT_FOUND });
                     return;
@@ -27,11 +28,12 @@ class IngredientService {
                     return;
                 }
 
-                const newIngredient = new Ingredient(req.body)
+                const newIngredient = new Ingredient(body)
                 await newIngredient.save()
 
                 resolve(newIngredient)
             } catch (error) {
+                console.log({error})
                 reject({ statusCode: 500, msg: MSG_TYPES.SERVER_ERROR, error })
             }
         })
@@ -40,7 +42,7 @@ class IngredientService {
     static getIngredient(filter){
         return new Promise(async (resolve, reject) => {
             try {
-                const ingredient  = await Ingredient.findOne(filter);
+                const ingredient  = await Ingredient.findOne(filter).populate('category');
 
                 if (!ingredient) {
                     return reject({ statusCode: 404, msg: MSG_TYPES.NOT_FOUND })

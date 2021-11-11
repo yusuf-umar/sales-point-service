@@ -11,6 +11,7 @@ const IngredientService = require("../services/ingredient");
 */
 exports.createIngredient = async (req, res, next) => {
     try {
+        req.body.user = req.user._id;
         const { error } = validateIngredient(req.body);
         if (error) return JsonResponse(res, 400, error.details[0].message);
 
@@ -32,7 +33,7 @@ exports.getIngredients = async (req, res, next) => {
     try {
         const { page, pageSize, skip } = paginate(req);
 
-        const { ingredients, total } = await IngredientService.getIngredients(skip, pageSize, req.body.filter, "User")
+        const { ingredients, total } = await IngredientService.getIngredients(skip, pageSize, req.body.filter, "category")
 
         const meta = {
             total,

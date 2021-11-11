@@ -43,11 +43,11 @@ class CategoryService {
         })
     }
 
-    static getCategories(skip, pageSize, filter = {}, populate = {}){
+    static getCategories(skip, pageSize, filter = {}){
         return new Promise(async (resolve, reject) => {
             try {
                 const categories = await Category.find(filter)
-                .skip(skip).limit(pageSize).populate(populate)
+                .skip(skip).limit(pageSize)
 
                 const total = await Category.find(filter).countDocuments()
 
