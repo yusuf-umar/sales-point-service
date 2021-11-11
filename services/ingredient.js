@@ -1,8 +1,9 @@
+const Ingredient = require('../models/ingredient');
 const Category = require('../models/category');
 const { MSG_TYPES } = require('../constant/types');
 
 
-class CategoryService {
+class IngredientService {
 
     static create(body) {
         return new Promise(async (resolve, reject) => {
@@ -11,86 +12,98 @@ class CategoryService {
                     user: body.user,
                     category: body.category
                 })
+                if(!category){
+                    reject({ statusCode: 404, msg: MSG_TYPES.NOT_FOUND });
+                    return;
+                }
 
-                if(category){
+                const ingredient = await Ingredient.findOne({
+                    user: body.user,
+                    category: category._id,
+                    ingredient: body.ingredient
+                })
+                if(ingredient){
                     reject({ statusCode: 404, msg: MSG_TYPES.EXIST });
                     return;
                 }
 
-                const newCategory = new Category(body)
-                await newCategory.save()
+                const newIngredient = new Ingredient(req.body)
+                await newIngredient.save()
 
-                resolve(newCategory)
+                resolve(newIngredient)
             } catch (error) {
                 reject({ statusCode: 500, msg: MSG_TYPES.SERVER_ERROR, error })
             }
         })
     }
 
-    static getCategory(filter){
+    static getIngredient(filter){
         return new Promise(async (resolve, reject) => {
             try {
-                const category  = await Category.findOne(filter);
+                const ingredient  = await Ingredient.findOne(filter);
 
-                if (!category) {
+                if (!ingredient) {
                     return reject({ statusCode: 404, msg: MSG_TYPES.NOT_FOUND })
                 }
 
-                resolve(category) 
+                resolve(ingredient) 
             } catch (error) {
                 reject({ statusCode: 500, msg: MSG_TYPES.SERVER_ERROR, error })
             }
         })
     }
 
-    static getCategories(skip, pageSize, filter = {}, populate = {}){
+    static getIngredients(skip, pageSize, filter = {}, populate = {}){
         return new Promise(async (resolve, reject) => {
             try {
-                const categories = await Category.find(filter)
+                const ingredients = await Ingredient.find(filter)
                 .skip(skip).limit(pageSize).populate(populate)
 
-                const total = await Category.find(filter).countDocuments()
+                const total = await Ingredient.find(filter).countDocuments()
 
-                resolve({ categories, total })
+                resolve({ ingredients, total })
             } catch (error) {
                 reject({ statusCode: 500, msg: MSG_TYPES.SERVER_ERROR, error })
             }
         })
     }
 
-    static updateCategory(categoryId, categoryObject){
+    static updateIngredient(user,ingredientId, ingredientObject){
         return new Promise(async (resolve, reject) => {
             try {
-                const category = await Category.findById(categoryId)
-                if (!category) {
+                const ingredient = await Ingredient.findOne({
+                    user: user._id,
+                    _id: ingredientId
+                })
+                if (!ingredient) {
                     return reject({ statusCode: 404, msg: MSG_TYPES.NOT_FOUND })
                 }
 
-                await category.updateOne(
+                await ingredient.updateOne(
                     {
-                        $set: categoryObject
+                        $set: ingredientObject
                     }
                 )
 
-                resolve(category)
+                resolve(ingredient)
             } catch (error) {
                 reject({ statusCode: 500, msg: MSG_TYPES.SERVER_ERROR, error })
             }
         })
     }
 
-    static deleteCategory(user, categoryId){
+    static deleteIngredient(user, ingredientId){
         return new Promise(async (resolve, reject) => {
             try {
-                const category = await Category.findOne({
+                const ingredient = await Ingredient.findOne({
                     user: user._id,
-                    _id: categoryId
+                    _id: ingredientId
                 })
-                if (!category) {
+                if (!ingredient) {
                     return reject({ statusCode: 404, msg: MSG_TYPES.NOT_FOUND })
                 }
 
-                await category.delete();
+                await ingredient.delete();
 
                 resolve({ msg: MSG_TYPES.DELETED })
             } catch (error) {
@@ -100,4 +113,4 @@ class CategoryService {
     }
 }
 
-module.exports = CategoryService
+module.exports = IngredientService
