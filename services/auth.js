@@ -33,7 +33,7 @@ class AuthService {
                 }
 
                 const token = user.generateAuthToken();
-                resolve(token)
+                resolve({token, user})
             } catch (error) {
                 reject({ statusCode: 500, msg: MSG_TYPES.SERVER_ERROR, error })
             }
