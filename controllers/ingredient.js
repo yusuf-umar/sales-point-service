@@ -31,9 +31,12 @@ exports.createIngredient = async (req, res, next) => {
 */
 exports.getIngredients = async (req, res, next) => {
     try {
+        let filter = {
+            user: req.user._id
+        }
         const { page, pageSize, skip } = paginate(req);
 
-        const { ingredients, total } = await IngredientService.getIngredients(skip, pageSize, req.body.filter, "category")
+        const { ingredients, total } = await IngredientService.getIngredients(skip, pageSize, filter, "category")
 
         const meta = {
             total,

@@ -31,9 +31,12 @@ exports.createCategory = async (req, res, next) => {
 */
 exports.getCategories = async (req, res, next) => {
     try {
+        let filter = {
+            user: req.user._id
+        }
         const { page, pageSize, skip } = paginate(req);
 
-        const { categories, total } = await CategoryService.getCategories(skip, pageSize, req.body.filter)
+        const { categories, total } = await CategoryService.getCategories(skip, pageSize, filter)
 
         const meta = {
             total,
