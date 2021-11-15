@@ -36,7 +36,7 @@ exports.getIngredientsByAdmin = async (req, res, next) => {
         }
         const { page, pageSize, skip } = paginate(req);
 
-        const { ingredients, total } = await IngredientService.getIngredients(skip, pageSize, filter, "category")
+        const { ingredients, total } = await IngredientService.getIngredients(skip, pageSize, filter)
 
         const meta = {
             total,
@@ -47,6 +47,7 @@ exports.getIngredientsByAdmin = async (req, res, next) => {
 
         JsonResponse(res, 201, MSG_TYPES.FETCHED, ingredients, meta)
     } catch (error) {
+        console.log({error})
         JsonResponse(res, error.statusCode, error.msg)
         next(error)
     }
@@ -61,7 +62,7 @@ exports.getIngredients = async (req, res, next) => {
     try {
         const { page, pageSize, skip } = paginate(req);
 
-        const { ingredients, total } = await IngredientService.getIngredients(skip, pageSize, req.body, "category")
+        const { ingredients, total } = await IngredientService.getIngredients(skip, pageSize, req.body)
 
         const meta = {
             total,

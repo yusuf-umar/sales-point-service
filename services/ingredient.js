@@ -44,11 +44,11 @@ class IngredientService {
         })
     }
 
-    static getIngredients(skip, pageSize, filter = {}, populate = {}){
+    static getIngredients(skip, pageSize, filter = {}){
         return new Promise(async (resolve, reject) => {
             try {
                 const ingredients = await Ingredient.find(filter)
-                .skip(skip).limit(pageSize).populate(populate)
+                .skip(skip).limit(pageSize)
 
                 const total = await Ingredient.find(filter).countDocuments()
 
