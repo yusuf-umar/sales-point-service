@@ -119,7 +119,7 @@ class UserService {
                 }
 
                 currentUser.status = "terminated";
-                currentUser.save();
+                await currentUser.save();
 
                 resolve({ msg: MSG_TYPES.DELETED })
             } catch (error) {
