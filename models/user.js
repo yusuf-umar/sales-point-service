@@ -60,23 +60,21 @@ const userSchema = new mongoose.Schema(
             type: Number,
             default: 0.0,
             min: 0,
-            required: true
         },
         weightUnit:{
             type: String,
             enum:["kg","g","lbs"],
-            required: true
+            default:'kg',
         },
         heightUnit:{
             type: String,
             enum:["cm","m","ft"],
-            required: true
+            default:'ft',
         },
         currentHeight:{
             type: Number,
             default: 0.0,
             min: 0,
-            required: true
         },
         targetWeight:{
             type: Number,

@@ -1,8 +1,8 @@
 const router = require("express").Router();
 const controller = require("../controllers");
-const { Auth } = require('../middlewares/auth');
+const { Auth, hasRole, ROLES } = require('../middlewares/auth');
 
-router.get("/", Auth, controller.shop.getShops);
+router.get("/", [Auth, hasRole(ROLES.USER)], controller.shop.getShops);
 
 router.get("/user", Auth, controller.shop.getShopByUser);
 

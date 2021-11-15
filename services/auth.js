@@ -12,17 +12,7 @@ class AuthService {
     static login(body) {
         return new Promise(async (resolve, reject) => {
             try {
-                const user = await User.findOne({ 
-                    $or: [
-                        {
-                            email: body.emailPhoneNumber
-                        },
-                        {
-                            phoneNumber: body.emailPhoneNumber
-                        }
-                    ]
-                });
-
+                const user = await User.findOne({email: body.email});
                 if (!user) {
                     return reject({ statusCode: 404, msg: MSG_TYPES.ACCOUNT_INVALID })
                 }

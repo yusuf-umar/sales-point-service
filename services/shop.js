@@ -65,7 +65,7 @@ class ShopService {
                     return reject({ statusCode: 404, msg: MSG_TYPES.NOT_FOUND })
                 }
         
-                resolve(user)
+                resolve(shop)
             } catch (error) {
                 reject({ statusCode: 500, msg: MSG_TYPES.SERVER_ERROR, error })
             }

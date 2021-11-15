@@ -17,11 +17,7 @@ function validateUser(body) {
         password: passwordComplexity(complexityOption).required(),
         name: Joi.string().required(),
         phoneNumber: Joi.string().required(),
-        role: Joi.string().valid('administator','user').required(),
-        currentWeight: Joi.number().min(0).required(),
-        currentHeight: Joi.number().min(0).required(),
-        weightUnit: Joi.string().valid("kg","g","lbs").required(),
-        heightUnit: Joi.string().valid("cm","m","ft").required(),
+        role: Joi.string().valid('administator','user').required()
     });
 
     return userSchema.validate(body)
@@ -37,7 +33,7 @@ function validateResendOTP(body){
 
 function validateLogin(user){
     const schema = Joi.object({
-        emailPhoneNumber: Joi.string().required(),
+        email: Joi.string().required(),
         password: passwordComplexity(complexityOption).required(),
     })
 

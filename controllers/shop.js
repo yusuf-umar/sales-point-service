@@ -119,7 +119,7 @@ exports.deleteShop = async (req, res, next) => {
     try {
         const shopId = req.params.shopId;
 
-        const shop = await ShopService.deleteIngredient(req.user, shopId);
+        const shop = await ShopService.deleteShop(req.user, shopId);
 
         return JsonResponse(res, 200, MSG_TYPES.DELETED);
     } catch (error) {

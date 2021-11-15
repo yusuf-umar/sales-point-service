@@ -6,7 +6,6 @@ const jwtSecret = process.env.JWT_SECRET
 
 const ROLES = {
     ADMIN: "administator",
-    STORE_OWNER: "store-owner",
     USER: "user"
 }
 
