@@ -17,7 +17,7 @@ function validateUser(body) {
         password: passwordComplexity(complexityOption).required(),
         name: Joi.string().required(),
         phoneNumber: Joi.string().required(),
-        role: Joi.string().valid('administator', 'store-owner','user').required(),
+        role: Joi.string().valid('administator','user').required(),
         currentWeight: Joi.number().min(0).required(),
         currentHeight: Joi.number().min(0).required(),
         weightUnit: Joi.string().valid("kg","g","lbs").required(),

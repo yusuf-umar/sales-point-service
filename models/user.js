@@ -52,7 +52,7 @@ const userSchema = new mongoose.Schema(
         },
         role:{
             type: String,
-            enum: ["administator", "store-owner", "user"],
+            enum: ["administator", "user"],
             default: "user",
             required: true
         },
@@ -87,7 +87,18 @@ const userSchema = new mongoose.Schema(
             type: Number,
             default: 0.0,
             min: 0,
+        },
+        currentBMI:{
+            type: String,
+            enum:["Underweight", "Normal", "Overweight", "Obese"],
+            default: "Underweight"
+        },
+        targetBMI:{
+            type: String,
+            enum:["Underweight", "Normal", "Overweight", "Obese"],
+            default: "Underweight"
         }
+
         // rememberToken: {
         //     token: {
         //         type: String,
