@@ -2,7 +2,9 @@ const router = require("express").Router();
 const controller = require("../controllers");
 const { Auth, hasRole, ROLES } = require('../middlewares/auth');
 
-router.get("/",[Auth, hasRole(ROLES.ADMIN)],controller.ingredient.getIngredients);
+router.get("/", Auth,controller.ingredient.getIngredients);
+
+router.get("/by-admin",[Auth, hasRole(ROLES.ADMIN)],controller.ingredient.getIngredients);
 
 router.get("/:ingredientId",Auth,controller.ingredient.getIngredient);
 

@@ -25,11 +25,11 @@ exports.createIngredient = async (req, res, next) => {
 }
 
 /** 
- * get Ingredients
+ * get Ingredients by Admin
  * @param {*} req
  * @param {*} res
 */
-exports.getIngredients = async (req, res, next) => {
+exports.getIngredientsByAdmin = async (req, res, next) => {
     try {
         let filter = {
             user: req.user._id
@@ -37,6 +37,31 @@ exports.getIngredients = async (req, res, next) => {
         const { page, pageSize, skip } = paginate(req);
 
         const { ingredients, total } = await IngredientService.getIngredients(skip, pageSize, filter, "category")
+
+        const meta = {
+            total,
+            pagination: {
+                pageSize, page
+            }
+        }
+
+        JsonResponse(res, 201, MSG_TYPES.FETCHED, ingredients, meta)
+    } catch (error) {
+        JsonResponse(res, error.statusCode, error.msg)
+        next(error)
+    }
+}
+
+/** 
+ * get Ingredients
+ * @param {*} req
+ * @param {*} res
+*/
+exports.getIngredients = async (req, res, next) => {
+    try {
+        const { page, pageSize, skip } = paginate(req);
+
+        const { ingredients, total } = await IngredientService.getIngredients(skip, pageSize, req.body, "category")
 
         const meta = {
             total,

@@ -8,19 +8,8 @@ class IngredientService {
     static create(body) {
         return new Promise(async (resolve, reject) => {
             try {
-                const category = await Category.findOne({
-                    user: body.user,
-                    _id: body.category
-                })
-
-                if(!category){
-                    reject({ statusCode: 404, msg: MSG_TYPES.NOT_FOUND });
-                    return;
-                }
-
                 const ingredient = await Ingredient.findOne({
                     user: body.user,
-                    category: category._id,
                     ingredient: body.ingredient
                 })
                 if(ingredient){

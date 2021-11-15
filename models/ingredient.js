@@ -8,11 +8,6 @@ const ingredientSchema = new mongoose.Schema(
             required: true,
             ref: 'User'
         },
-        category:{
-            type: objectId,
-            required: true,
-            ref:'Category'
-        },
         ingredient:{
             type: String,
             required: true,
@@ -26,7 +21,7 @@ const ingredientSchema = new mongoose.Schema(
         },
         calorieUnit:{
             type: String,
-            default: "cal"
+            default: "gram"
         }
     }
 )
