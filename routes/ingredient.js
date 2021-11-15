@@ -4,7 +4,9 @@ const { Auth, hasRole, ROLES } = require('../middlewares/auth');
 
 router.get("/", Auth,controller.ingredient.getIngredients);
 
-router.get("/by-admin",[Auth, hasRole(ROLES.ADMIN)],controller.ingredient.getIngredients);
+router.get("/admin",[Auth, hasRole(ROLES.ADMIN)],controller.ingredient.getIngredientsByAdmin);
+
+router.get("/", Auth ,controller.ingredient.getIngredients);
 
 router.get("/:ingredientId",Auth,controller.ingredient.getIngredient);
 
