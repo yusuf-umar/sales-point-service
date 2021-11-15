@@ -25,11 +25,11 @@ exports.createCategory = async (req, res, next) => {
 }
 
 /** 
- * get Categories
+ * get Categories by admin
  * @param {*} req
  * @param {*} res
 */
-exports.getCategories = async (req, res, next) => {
+exports.getCategoriesByAdmin = async (req, res, next) => {
     try {
         let filter = {
             user: req.user._id
@@ -37,6 +37,32 @@ exports.getCategories = async (req, res, next) => {
         const { page, pageSize, skip } = paginate(req);
 
         const { categories, total } = await CategoryService.getCategories(skip, pageSize, filter)
+
+        const meta = {
+            total,
+            pagination: {
+                pageSize, page
+            }
+        }
+
+        JsonResponse(res, 201, MSG_TYPES.FETCHED, categories, meta)
+    } catch (error) {
+        console.log({error})
+        JsonResponse(res, error.statusCode, error.msg)
+        next(error)
+    }
+}
+
+/** 
+ * get Categories
+ * @param {*} req
+ * @param {*} res
+*/
+exports.getCategories = async (req, res, next) => {
+    try {
+        const { page, pageSize, skip } = paginate(req);
+
+        const { categories, total } = await CategoryService.getCategories(skip, pageSize, req.body)
 
         const meta = {
             total,
