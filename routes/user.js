@@ -10,6 +10,8 @@ router.get("/:id",Auth,controller.user.getUser)
 
 router.post("/",controller.user.createUser)
 
+router.get('/confirmation/:email/:token',controller.user.confirmEmail)
+
 router.patch("/",Auth,controller.user.updateUser)
 
 router.patch("/me",Auth,controller.user.teminateMe)

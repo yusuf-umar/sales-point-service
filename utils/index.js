@@ -1,22 +1,12 @@
 const RandExp = require("randexp");
 const dotenv = require('dotenv').config();
+const mailjet = require('node-mailjet').connect('9c50938391264148b6be5f5295e858aa', '4d2360bc6de8bd7e37a98a025cdaae41')
 
 
-GenerateToken = (num) => {
-  var text = "";
-  const possible =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+GenerateCode = (num) => {
+  const token = new RandExp(`[a-z]{${num}}`).gen();
 
-  for (var i = 0; i < num; i++)
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-
-  return text;
-};
-
-GenerateOTP = (num) => {
-  const OTPCode = new RandExp(`[0-9]{${num}}`).gen();
-
-  return OTPCode;
+  return token;
 };
 
 
@@ -32,22 +22,35 @@ const paginate = (req) => {
   return { page, pageSize, skip };
 };
 
-const AsyncForEach = async (array, callback) => {
-  try {
-    for (let index = 0; index < array.length; index++) {
-      await callback(array[index], index, array);
-    }
-  } catch (error) {
-    console.log('Async for each error', error.message);
-
-  }
-};
-
-
+const mailSender = async (to, subject, text, html) => {
+  const request = mailjet.post("send", { 'version': 'v3.1' })
+    .request({
+      "Messages": [
+        {
+          "From": {
+            "Email": "fafowora.oluwatobiloba@academicianhelp.com",
+            "Name": "fafowora"
+          },
+          "To": [
+            to
+          ],
+          "Subject": subject,
+          "TextPart": text,
+          "HTMLPart": html,
+          "CustomID": "AppGettingStartedTest"
+        }
+      ]
+    })
+    
+    await request.then((result) => {
+      console.log(result.body)
+    }).catch((err) => {
+      console.log({err})
+    })
+}
 
 module.exports = {
   paginate,
-  GenerateOTP,
-  GenerateToken,
-  AsyncForEach,
+  GenerateCode,
+  mailSender
 };

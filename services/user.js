@@ -1,19 +1,20 @@
 const User = require("../models/user")
 const { MSG_TYPES } = require('../constant/types');
+const { mailSender, GenerateCode } = require('../utils/index');
+const moment = require("moment");
 
 class UserService {
-    
+
     /**
      * Create User 
      * @param {Object} body request body object
     */
-    static create(body) {
+    static create(body, req) {
         return new Promise(async (resolve, reject) => {
             try {
                 const user = await User.findOne({
                     email: body.email,
-                    username: body.username,
-                    phoneNumber: body.phoneNumber,
+                    name: body.name,
                 })
 
                 if (user) {
@@ -24,6 +25,22 @@ class UserService {
                 const newUser = new User(body);
                 newUser.email.toLowerCase();
 
+                const token = GenerateCode(16);
+                newUser.rememberToken.token = token;
+                newUser.rememberToken.expiredDate = moment().add(20, "minutes");
+
+                //email verification link
+                let to = {
+                    "Email": newUser.email,
+                    "Name": newUser.name
+                };
+                let subject = "Account Verification Link"
+                let textpart = "Please Click on verify your account"
+                let HTMLPart = 'Hello ' + req.body.name + ',\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host +
+                '\/user\/confirmation\/' + newUser.email + '\/' + newUser.rememberToken.token + '\n\nThank You!\n';
+
+                await mailSender(to, subject, textpart, HTMLPart);
+
                 await newUser.save();
 
                 resolve(newUser)
@@ -32,6 +49,32 @@ class UserService {
             }
         })
     }
+
+    static confirmEmail(email, token) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const currentDate = new Date();
+                
+                const user = await User.findOne({
+                    email: email,
+                    "rememberToken.token": token,
+                    "rememberToken.expiredDate": { $gte: currentDate },
+                })
+                if(!user){
+                    return reject({statusCode:401, msg: MSG_TYPES.NOT_FOUND})
+                }
+
+                user.isVerified = true;
+                user.rememberToken = null
+                user.save();
+
+                resolve({msg: MSG_TYPES.ACCOUNT_VERIFIED});
+            } catch (error) {
+                reject({ statusCode: 500, msg: MSG_TYPES.SERVER_ERROR, error })
+            }
+        })
+    }
+
 
     /**
      * Get Users 

@@ -19,10 +19,33 @@ exports.createUser = async (req, res, next) => {
         const salt = await bcrypt.genSalt(10);
         req.body.password = await bcrypt.hash(req.body.password, salt);
 
-        let newUser = await UserService.create(req.body);
+        let newUser = await UserService.create(req.body, req);
 
         JsonResponse(res, 201, MSG_TYPES.CREATED, newUser);
     } catch (error) {
+        console.log({error})
+        JsonResponse(res, error.statusCode, error.msg)
+        next(error)
+    }
+}
+
+/** 
+ * Verify User
+ * @param {*} req
+ * @param {*} res
+*/
+exports.confirmEmail = async (req, res, next) => {
+    try {
+        const token = req.params.token
+        const email = req.params.email
+
+        const msg =  await UserService.confirmEmail(email, token)
+
+        res.redirect('http://localhost:4200/login');
+
+        JsonResponse(res, 201, MSG_TYPES.ACCOUNT_VERIFIED);
+    } catch (error) {
+        console.log({error})
         JsonResponse(res, error.statusCode, error.msg)
         next(error)
     }

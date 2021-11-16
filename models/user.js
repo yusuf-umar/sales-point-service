@@ -95,31 +95,30 @@ const userSchema = new mongoose.Schema(
             type: String,
             enum:["Underweight", "Normal", "Overweight", "Obese"],
             default: "Underweight"
+        },
+        rememberToken: {
+            token: {
+                type: String,
+                default: null,
+            },
+            expiredDate: {
+                type: Date,
+                default: null,
+            },
+        },
+        passwordRetrive: {
+            createdAt: {
+                type: Date,
+                default: Date.now(),
+                expires: 3600,
+            },
+            resetPasswordToken: {
+                type: String,
+            },
+            resetPasswordExpires: {
+                type: Date,
+            }
         }
-
-        // rememberToken: {
-        //     token: {
-        //         type: String,
-        //         default: null,
-        //     },
-        //     expiredDate: {
-        //         type: Date,
-        //         default: null,
-        //     },
-        // },
-        // passwordRetrive: {
-        //     createdAt: {
-        //         type: Date,
-        //         default: Date.now(),
-        //         expires: 3600,
-        //     },
-        //     resetPasswordToken: {
-        //         type: String,
-        //     },
-        //     resetPasswordExpires: {
-        //         type: Date,
-        //     }
-        // }
     },
     {
         timestamps: true,

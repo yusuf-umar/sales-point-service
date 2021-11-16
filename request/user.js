@@ -23,9 +23,9 @@ function validateUser(body) {
     return userSchema.validate(body)
 }
 
-function validateResendOTP(body){
+function validateResendLink(body){
     const schema = Joi.object({
-        phoneNumber: Joi.string().max(50).required(),
+        email: Joi.string().max(50).required(),
     })
 
     return schema.validate(body)
@@ -35,15 +35,6 @@ function validateLogin(user){
     const schema = Joi.object({
         email: Joi.string().required(),
         password: passwordComplexity(complexityOption).required(),
-    })
-
-    return schema.validate(user)
-}
-
-function validateVerifyUser(user){
-    const schema = Joi.object({
-        phoneNumber: Joi.string().required(),
-        OTPCode: Joi.string().min(5).max(5).required(),
     })
 
     return schema.validate(user)
@@ -61,7 +52,7 @@ function validatePasswordChange(body){
 
 function validateResetPassword(body){
     const schema = Joi.object({
-        phoneNumber: Joi.string().required(),
+        email: Joi.string().required(),
         token: Joi.string().required(),
         password: passwordComplexity(complexityOption).required(),
     })
@@ -71,9 +62,8 @@ function validateResetPassword(body){
 
 module.exports = {
     validateUser,
-    validateResendOTP,
+    validateResendLink,
     validateLogin,
-    validateVerifyUser,
     validatePasswordChange,
     validateResetPassword
 }
