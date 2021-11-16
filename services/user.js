@@ -37,7 +37,7 @@ class UserService {
                 let subject = "Account Verification Link"
                 let textpart = "Please Click on verify your account"
                 let HTMLPart = 'Hello ' + req.body.name + ',\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host +
-                '\/user\/confirmation\/' + newUser.email + '\/' + newUser.rememberToken.token + '\n\nThank You!\n';
+                    '\/user\/confirmation\/' + newUser.email + '\/' + newUser.rememberToken.token + '\n\nThank You!\n';
 
                 await mailSender(to, subject, textpart, HTMLPart);
 
@@ -54,21 +54,21 @@ class UserService {
         return new Promise(async (resolve, reject) => {
             try {
                 const currentDate = new Date();
-                
+
                 const user = await User.findOne({
                     email: email,
                     "rememberToken.token": token,
                     "rememberToken.expiredDate": { $gte: currentDate },
                 })
-                if(!user){
-                    return reject({statusCode:401, msg: MSG_TYPES.NOT_FOUND})
+                if (!user) {
+                    return reject({ statusCode: 401, msg: MSG_TYPES.NOT_FOUND })
                 }
 
                 user.isVerified = true;
                 user.rememberToken = null
                 user.save();
 
-                resolve({msg: MSG_TYPES.ACCOUNT_VERIFIED});
+                resolve({ msg: MSG_TYPES.ACCOUNT_VERIFIED });
             } catch (error) {
                 reject({ statusCode: 500, msg: MSG_TYPES.SERVER_ERROR, error })
             }
@@ -138,12 +138,68 @@ class UserService {
                         $set: userObject
                     }
                 )
+                
+                await this.calculateBMI(user);
 
                 resolve(user)
             } catch (error) {
                 reject({ statusCode: 500, msg: MSG_TYPES.SERVER_ERROR, error })
             }
         })
+    }
+
+    static calculateBMI(user) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                if (user.currentWeight && user.currentHeight) {
+                    let currentBMI = user.currentWeight / user.currentHeight * user.currentHeight
+                    let currentBMICategory = this.returnCategoryBMI(currentBMI)
+                    console.log(currentBMI)
+                    await user.updateOne(
+                        {
+                            $set: {
+                                currentBMI: currentBMI,
+                                currentBMICategory: currentBMICategory
+                            }
+                        }
+                    );
+                }
+
+                if(user.targetWeight && user.targetHeight){
+                    let targetBMI = user.targetWeight / user.targetHeight * user.targetHeight;
+                    let targetBMICategory = this.returnCategoryBMI(targetBMI);
+                    console.log(targetBMI)
+
+                    await user.updateOne(
+                        {
+                            $set: {
+                                targetBMI: targetBMI,
+                                targetBMICategory: targetBMICategory
+                            }
+                        }
+                    );
+                }
+
+                resolve(user)
+            } catch (error) {
+                reject({ statusCode: 500, msg: MSG_TYPES.SERVER_ERROR, error })
+            }
+        })
+    }
+    
+    static returnCategoryBMI(BMI) {
+        let categoryBMI = ""
+        if (BMI < 18.5) {
+            categoryBMI = 'UnderWeight'
+        } else if (BMI > 18.5  && BMI < 24.9) {
+            categoryBMI = 'Normal'
+        } else if (BMI > 25  && BMI < 29.9) {
+            categoryBMI = 'OverWeight'
+        } else {
+            categoryBMI = 'Obese'
+        }
+
+        return categoryBMI
     }
 
     /**

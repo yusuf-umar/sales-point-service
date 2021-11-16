@@ -120,7 +120,7 @@ exports.getUser = async (req, res, next) => {
  * @param {*} req
  * @param {*} res
 */
-exports.updateUser = async (req, res) => {
+exports.updateUser = async (req, res, next) => {
     try {
         const userId = req.user._id
 

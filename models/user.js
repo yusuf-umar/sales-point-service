@@ -87,11 +87,21 @@ const userSchema = new mongoose.Schema(
             min: 0,
         },
         currentBMI:{
+            type: Number,
+            default: 0.0,
+            min: 0
+        },
+        currentBMICategory:{
             type: String,
             enum:["Underweight", "Normal", "Overweight", "Obese"],
             default: "Underweight"
         },
         targetBMI:{
+            type: Number,
+            default: 0.0,
+            min: 0
+        },
+        targetBMICategory:{
             type: String,
             enum:["Underweight", "Normal", "Overweight", "Obese"],
             default: "Underweight"

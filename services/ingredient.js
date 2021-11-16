@@ -31,7 +31,7 @@ class IngredientService {
     static getIngredient(filter){
         return new Promise(async (resolve, reject) => {
             try {
-                const ingredient  = await Ingredient.findOne(filter).populate('category');
+                const ingredient  = await Ingredient.findOne(filter);
 
                 if (!ingredient) {
                     return reject({ statusCode: 404, msg: MSG_TYPES.NOT_FOUND })
