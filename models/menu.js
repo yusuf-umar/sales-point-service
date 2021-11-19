@@ -2,6 +2,30 @@ const mongoose = require("mongoose");
 const objectId = mongoose.Types.ObjectId;
 const getSymbolFromCurrency = require('currency-symbol-map')
 
+const assestSchema = new mongoose.Schema({
+    type: {
+        type: String,
+        required: true
+    },
+    URL: {
+        type: String,
+        required: true
+    },
+    name:{
+        type: String, 
+        required: true
+    },
+    fieldName:{ 
+        type: String, 
+        required: true
+    },
+    default: {
+        type: Boolean,
+        default: false
+    }
+})
+
+
 const menuSchema = new mongoose.Schema(
     {
         user: {
@@ -28,21 +52,36 @@ const menuSchema = new mongoose.Schema(
             type: String,
             default: getSymbolFromCurrency('GBP')
         },
-        // ingredient: [{
-        //     type: objectId,
-        //     required: true,
-        //     ref: 'Ingredient'
-        // }],
-        ingredient: {
+        ingredients: [{
             type: objectId,
             required: true,
             ref: 'Ingredient'
-        },
+        }],
+        // ingredient: {
+        //     type: objectId,
+        //     required: true,
+        //     ref: 'Ingredient'
+        // },
         category: {
             type: objectId,
             required: true,
             ref: 'Category'
         },
+        price:{
+            type: Number,
+            required: tru,
+            min: 0
+        },
+        quantity:{
+            type: Number,
+            required: tru,
+            min: 0
+        },
+        status:{
+            type: String,
+            emun: ['avaiable', 'sold-out']
+        },
+        image: assestSchema
     }
 )
 

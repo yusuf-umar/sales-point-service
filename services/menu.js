@@ -53,6 +53,21 @@ class MenuService {
         })
     }
 
+    static returnImages(file) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                if (!file) {
+                    return reject({ statusCode: 400, msg: MSG_TYPES.DOCUMENT_REQUIRED })
+                }
+                let asset = file;
+
+                resolve(assets)
+            } catch (error) {
+                reject({ statusCode: 500, msg: MSG_TYPES.SERVER_ERROR, error })
+            }
+        })
+    }
+
     /**
      * Get Menu 
      * @param {Object} filter filter

@@ -19,7 +19,7 @@ exports.createMenu = async (req, res, next) => {
 
         JsonResponse(res, 201, MSG_TYPES.CREATED, createMenu)
     } catch (error) {
-        console.log({error})
+        console.log({ error })
         JsonResponse(res, error.statusCode, error.msg)
         next(error)
     }
@@ -52,6 +52,21 @@ exports.getMenus = async (req, res, next) => {
 }
 
 
+exports.uploadFile = async (req, res, next) => {
+    try {
+        let asset = await MenuService.uploadFile(req.files)
+        let body={
+            image: asset
+        }
+
+        let menu = await MenuService.updateMenu(req.params.menuId, body, req.user)
+
+        JsonResponse(res, 201, MSG_TYPES.UPDATED, menu)
+    } catch (error) {
+
+    }
+}
+
 /** 
  * get Menus by user
  * @param {*} req
@@ -76,7 +91,7 @@ exports.getMenusByUser = async (req, res, next) => {
 
         JsonResponse(res, 201, MSG_TYPES.FETCHED, menus, meta)
     } catch (error) {
-        console.log({error})
+        console.log({ error })
         JsonResponse(res, error.statusCode, error.msg)
         next(error)
     }
@@ -98,7 +113,7 @@ exports.getMenu = async (req, res, next) => {
 
         JsonResponse(res, 200, MSG_TYPES.FETCHED, shop)
     } catch (error) {
-        console.log({error})
+        console.log({ error })
         JsonResponse(res, error.statusCode, error.msg)
         next(error)
     }

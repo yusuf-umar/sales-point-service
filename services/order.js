@@ -1,35 +1,25 @@
 const Order = require("../models/order")
 const { MSG_TYPES } = require('../constant/types');
 
-class ShopService {
+class OrderService {
 
     /**
      * Create Order 
      * @param {Object} body request body object
     */
-    // static create(body) {
-    //     return new Promise(async (resolve, reject) => {
-    //         try {
-    //             const order = await Order.findOne({
-    //                 user: body.user,
-    //                 name: body.name
-    //             })
+    static create(body) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const newOrder = new Order(body);
 
-    //             if (order) {
-    //                 reject({ statusCode: 404, msg: MSG_TYPES.EXIST });
-    //                 return;
-    //             }
+                await newOrder.save();
 
-    //             const newOrder = new Order(body);
-
-    //             await newOrder.save();
-
-    //             resolve(newOrder)
-    //         } catch (error) {
-    //             reject({ statusCode: 500, msg: MSG_TYPES.SERVER_ERROR, error })
-    //         }
-    //     })
-    // }
+                resolve(newOrder)
+            } catch (error) {
+                reject({ statusCode: 500, msg: MSG_TYPES.SERVER_ERROR, error })
+            }
+        })
+    }
 
     /**
      * Get Orders 
@@ -37,7 +27,7 @@ class ShopService {
      * @param {Number} pageSize page size
      * @param {Object} filter filter
     */
-    static getAllShop(skip, pageSize, filter = {}) {
+    static getAllOrders(skip, pageSize, filter = {}) {
         return new Promise(async (resolve, reject) => {
             try {
                 const orders = await Order.find(filter)
@@ -56,7 +46,7 @@ class ShopService {
      * Get Order 
      * @param {Object} filter filter
     */
-    static getShop(filter) {
+    static getOrder(filter) {
         return new Promise(async (resolve, reject) => {
             try {
                 const order = await Order.findOne(filter);
@@ -72,30 +62,26 @@ class ShopService {
         })
     }
 
-
-    /**
-     * Delete Order 
-     * @param {Object} user user
-    */
-    static deleteOrder(user, orderId) {
+    static updateOrder(filter={}, orderObject){
         return new Promise(async (resolve, reject) => {
             try {
-                const order = await Order.findOne({
-                    user: user._id,
-                    _id: orderId
-                })
+                const order = await Order.findOne(filter)
                 if (!order) {
                     return reject({ statusCode: 404, msg: MSG_TYPES.NOT_FOUND })
                 }
 
-                await order.delete();
+                await order.updateOne(
+                    {
+                        $set: orderObject
+                    }
+                )
 
-                resolve({ msg: MSG_TYPES.DELETED })
+                resolve(order)
             } catch (error) {
-                return reject({ statusCode: 500, msg: MSG_TYPES.SERVER_ERROR, error });
+                reject({ statusCode: 500, msg: MSG_TYPES.SERVER_ERROR, error })
             }
         })
     }
 }
 
-module.exports = ShopService
+module.exports = OrderService

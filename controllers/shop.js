@@ -38,7 +38,7 @@ exports.uploadImage = async (req, res, next) => {
 
        let shop =  await ShopService.updateShop(req.params.shopId, body,req.user)
     
-        JsonResponse(res, 201, MSG_TYPES.CREATED, shop)
+        JsonResponse(res, 201, MSG_TYPES.UPDATED, shop)
     } catch (error) {
         JsonResponse(res, error.statusCode, error.msg)
         next(error)

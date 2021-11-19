@@ -7,11 +7,13 @@ function validateMenu(body){
         shop: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
         name: Joi.string().required(),
         description: Joi.string().required(),
-        // ingredient: Joi.array().required().items(
-        //     Joi.string().regex(/^[0-9a-fA-F]{24}$/).required()
-        // ),
-        ingredient: Joi.string().required(),
+        ingredients: Joi.array().required().items(
+            Joi.string().regex(/^[0-9a-fA-F]{24}$/).required()
+        ),
+        // ingredient: Joi.string().required(),
         category: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
+        price: Joi.number().min(0).required(),
+        quantity: Joi.number().min(0).required(),
     });
 
     return menuSchema.validate(body)

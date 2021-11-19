@@ -1,6 +1,6 @@
-const { boolean, number } = require("joi");
 const mongoose = require("mongoose");
 const objectId = mongoose.Types.ObjectId;
+const getSymbolFromCurrency = require('currency-symbol-map');
 
 const orderSchema = new mongoose.Schema(
     {
@@ -19,7 +19,7 @@ const orderSchema = new mongoose.Schema(
             required: true,
             ref: 'Menu'
         },
-        quantity: {
+        quantity:{
             type: Number,
             required: true,
             min: 0
@@ -29,11 +29,16 @@ const orderSchema = new mongoose.Schema(
             required: true,
             min: 0
         },
+        currency:{
+            type: String,
+            default: getSymbolFromCurrency('GBP')
+        },
         status:{
-            type: Boolean,
-            required: true,
-            default: false
-        }
+            type: String,
+            enum:['Approved','Delivered', 'On-route','Waiting','Cancel'],
+            default: 'Waiting'
+        },
+        
     }
 )
 
