@@ -1,13 +1,14 @@
 const Shop = require("../models/shop")
+const User = require("../models/user")
 const { MSG_TYPES } = require('../constant/types');
 
 class ShopService {
-    
+
     /**
      * Create Shop 
      * @param {Object} body request body object
     */
-    static create(body) {
+    static create(body, files) {
         return new Promise(async (resolve, reject) => {
             try {
                 const shop = await Shop.findOne({
@@ -25,6 +26,34 @@ class ShopService {
                 await newShop.save();
 
                 resolve(newShop)
+            } catch (error) {
+                reject({ statusCode: 500, msg: MSG_TYPES.SERVER_ERROR, error })
+            }
+        })
+    }
+
+    static returnImages(files) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                if (!files) {
+                    return reject({ statusCode: 400, msg: MSG_TYPES.DOCUMENT_REQUIRED })
+                }
+                let assets = [];
+                for (const property in files) {
+                    for (let i = 0; i < files[property].length; i++) {
+
+                        let assest = {
+                            type: files[property][i].metadata.filename,
+                            URL: files[property][i].location,
+                            name: files[property][i].originalname,
+                            fieldName: files[property][i].fieldname
+                        }
+
+                        assets.push(assest)
+                    }
+                }
+
+                resolve(assets)
             } catch (error) {
                 reject({ statusCode: 500, msg: MSG_TYPES.SERVER_ERROR, error })
             }
@@ -64,7 +93,7 @@ class ShopService {
                 if (!shop) {
                     return reject({ statusCode: 404, msg: MSG_TYPES.NOT_FOUND })
                 }
-        
+
                 resolve(shop)
             } catch (error) {
                 reject({ statusCode: 500, msg: MSG_TYPES.SERVER_ERROR, error })
@@ -82,10 +111,16 @@ class ShopService {
         return new Promise(async (resolve, reject) => {
             try {
                 const shop = await Shop.findOne({
-                    user: user._id,
                     _id: shopId
-                })
+                });
                 if (!shop) {
+                    return reject({ statusCode: 404, msg: MSG_TYPES.NOT_FOUND })
+                }
+
+                const userDetails = await User.findOne({
+                    _id: user._id
+                });
+                if (!userDetails) {
                     return reject({ statusCode: 404, msg: MSG_TYPES.NOT_FOUND })
                 }
 
@@ -116,7 +151,7 @@ class ShopService {
                 if (!shop) {
                     return reject({ statusCode: 404, msg: MSG_TYPES.NOT_FOUND })
                 }
-             
+
                 await shop.delete();
 
                 resolve({ msg: MSG_TYPES.DELETED })

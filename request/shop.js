@@ -8,13 +8,6 @@ function validateShop(body){
         description: Joi.string().required(),
         address: Joi.string().required(),
         postCode: Joi.string().required(),
-        // certificates: Joi.array().items(
-        //     Joi.string()
-        //         .base64({paddingRequired: false})
-        //         .optional()
-        // )
-        // .max(4)
-        // .optional(),
     });
 
     return shopSchema.validate(body)

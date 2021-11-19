@@ -7,9 +7,10 @@ function validateMenu(body){
         shop: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
         name: Joi.string().required(),
         description: Joi.string().required(),
-        ingredient: Joi.array().required().items(
-            Joi.string().regex(/^[0-9a-fA-F]{24}$/).required()
-        ),
+        // ingredient: Joi.array().required().items(
+        //     Joi.string().regex(/^[0-9a-fA-F]{24}$/).required()
+        // ),
+        ingredient: Joi.string().required(),
         category: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
     });
 

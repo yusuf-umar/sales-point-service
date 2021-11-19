@@ -12,6 +12,7 @@ const ShopService = require("../services/shop");
 exports.createShop = async (req, res, next) => {
     try {
         req.body.user = req.user._id;
+
         const { error } = validateShop(req.body);
         if (error) return JsonResponse(res, 400, error.details[0].message);
 
@@ -19,11 +20,30 @@ exports.createShop = async (req, res, next) => {
 
         JsonResponse(res, 201, MSG_TYPES.CREATED, createShop)
     } catch (error) {
+        console.log({ error })
         JsonResponse(res, error.statusCode, error.msg)
         next(error)
     }
 }
 
+
+exports.uploadImage = async (req, res, next) => {
+    try {
+        console.log(req.files)
+
+        let assets = await ShopService.returnImages(req.files);
+        let body = {
+            certificates: assets
+        }
+
+       let shop =  await ShopService.updateShop(req.params.shopId, body,req.user)
+    
+        JsonResponse(res, 201, MSG_TYPES.CREATED, shop)
+    } catch (error) {
+        JsonResponse(res, error.statusCode, error.msg)
+        next(error)
+    }
+}
 
 /** 
  * get Shops
@@ -81,9 +101,18 @@ exports.getShopByUser = async (req, res, next) => {
             user: req.user._id
         }
 
-        const shop = await ShopService.getShop(filter)
+        const { page, pageSize, skip } = paginate(req);
 
-        JsonResponse(res, 200, MSG_TYPES.FETCHED, shop)
+        const { shops, total } = await ShopService.getAllShop(skip, pageSize, filter)
+
+        const meta = {
+            total,
+            pagination: {
+                pageSize, page
+            }
+        }
+
+        JsonResponse(res, 200, MSG_TYPES.FETCHED, shops, meta)
     } catch (error) {
         JsonResponse(res, error.statusCode, error.msg)
         next(error)
@@ -102,6 +131,20 @@ exports.updateShop = async (req, res, next) => {
         const shopId = req.params.shopId;
 
         await ShopService.updateShop(shopId, req.body, req.user);
+
+        return JsonResponse(res, 200, MSG_TYPES.UPDATED);
+    } catch (error) {
+        JsonResponse(res, error.statusCode, error.msg)
+        next(error)
+    }
+}
+
+
+exports.approveShop = async (req, res, next) => {
+    try {
+        const shopId = req.params.shopId;
+
+        await ShopService.updateShop(shopId, req.body, req.user)
 
         return JsonResponse(res, 200, MSG_TYPES.UPDATED);
     } catch (error) {

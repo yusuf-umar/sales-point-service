@@ -19,6 +19,7 @@ exports.createMenu = async (req, res, next) => {
 
         JsonResponse(res, 201, MSG_TYPES.CREATED, createMenu)
     } catch (error) {
+        console.log({error})
         JsonResponse(res, error.statusCode, error.msg)
         next(error)
     }
@@ -75,6 +76,7 @@ exports.getMenusByUser = async (req, res, next) => {
 
         JsonResponse(res, 201, MSG_TYPES.FETCHED, menus, meta)
     } catch (error) {
+        console.log({error})
         JsonResponse(res, error.statusCode, error.msg)
         next(error)
     }
@@ -96,6 +98,7 @@ exports.getMenu = async (req, res, next) => {
 
         JsonResponse(res, 200, MSG_TYPES.FETCHED, shop)
     } catch (error) {
+        console.log({error})
         JsonResponse(res, error.statusCode, error.msg)
         next(error)
     }
@@ -111,7 +114,7 @@ exports.updateMenu = async (req, res, next) => {
     try {
         const menuId = req.params.menuId;
 
-        await MenuService.updateShop(menuId, req.body, req.user);
+        await MenuService.updateMenu(menuId, req.body, req.user);
 
         return JsonResponse(res, 200, MSG_TYPES.UPDATED);
     } catch (error) {

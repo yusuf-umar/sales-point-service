@@ -4,17 +4,24 @@ const objectId = mongoose.Types.ObjectId;
 const assestSchema = new mongoose.Schema({
     type: {
         type: String,
-        enum: ['img', 'document'],
-        default: "img"
+        required: true
     },
     URL: {
         type: String,
         required: true
     },
-    key: {
-        type: String,
+    name:{
+        type: String, 
         required: true
     },
+    fieldName:{ 
+        type: String, 
+        required: true
+    },
+    default: {
+        type: Boolean,
+        default: false
+    }
 })
 
 

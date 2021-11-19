@@ -42,7 +42,7 @@ class MenuService {
         return new Promise(async (resolve, reject) => {
             try {
                 const menus = await Menu.find(filter)
-                    .skip(skip).limit(pageSize)
+                    .skip(skip).limit(pageSize).populate('category shop ingredient')
 
                 const total = await Menu.find(filter).countDocuments()
 
@@ -60,7 +60,7 @@ class MenuService {
     static getMenu(filter) {
         return new Promise(async (resolve, reject) => {
             try {
-                const menu = await Menu.findOne(filter);
+                const menu = await Menu.findOne(filter).populate('category ingredient shop');
 
                 if (!menu) {
                     return reject({ statusCode: 404, msg: MSG_TYPES.NOT_FOUND })
