@@ -6,6 +6,7 @@ const ingredient = require('../routes/ingredient');
 const shop = require('../routes/shop');
 const menu = require('../routes/menu');
 const order = require('../routes/order');
+const cart = require('../routes/cart');
 
 module.exports = function (app) {
     app.use(express.json({limit: '50mb'}));
@@ -17,6 +18,7 @@ module.exports = function (app) {
     app.use('/shop', shop);
     app.use('/menu', menu);
     app.use('/order', order);
+    app.use('/cart', cart);
 
     app.use((req, res, next) => {
         return JsonResponse(res, 404, "API endpoint not found")

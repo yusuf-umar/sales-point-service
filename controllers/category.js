@@ -45,7 +45,7 @@ exports.getCategoriesByAdmin = async (req, res, next) => {
             }
         }
 
-        JsonResponse(res, 201, MSG_TYPES.FETCHED, categories, meta)
+        JsonResponse(res, 200, MSG_TYPES.FETCHED, categories, meta)
     } catch (error) {
         console.log({error})
         JsonResponse(res, error.statusCode, error.msg)
@@ -71,7 +71,7 @@ exports.getCategories = async (req, res, next) => {
             }
         }
 
-        JsonResponse(res, 201, MSG_TYPES.FETCHED, categories, meta)
+        JsonResponse(res, 200, MSG_TYPES.FETCHED, categories, meta)
     } catch (error) {
         console.log({error})
         JsonResponse(res, error.statusCode, error.msg)

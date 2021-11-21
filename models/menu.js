@@ -57,11 +57,6 @@ const menuSchema = new mongoose.Schema(
             required: true,
             ref: 'Ingredient'
         }],
-        // ingredient: {
-        //     type: objectId,
-        //     required: true,
-        //     ref: 'Ingredient'
-        // },
         category: {
             type: objectId,
             required: true,
