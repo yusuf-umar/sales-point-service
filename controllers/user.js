@@ -43,7 +43,7 @@ exports.confirmEmail = async (req, res, next) => {
 
         res.redirect('http://localhost:4200/login');
 
-        JsonResponse(res, 201, MSG_TYPES.ACCOUNT_VERIFIED);
+        JsonResponse(res, 200, MSG_TYPES.ACCOUNT_VERIFIED);
     } catch (error) {
         console.log({error})
         JsonResponse(res, error.statusCode, error.msg)

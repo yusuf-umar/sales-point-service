@@ -38,7 +38,7 @@ exports.uploadImage = async (req, res, next) => {
 
        let shop =  await ShopService.updateShop(req.params.shopId, body,req.user)
     
-        JsonResponse(res, 201, MSG_TYPES.UPDATED, shop)
+        JsonResponse(res, 200, MSG_TYPES.UPDATED, shop)
     } catch (error) {
         JsonResponse(res, error.statusCode, error.msg)
         next(error)
@@ -63,7 +63,7 @@ exports.getShops = async (req, res, next) => {
             }
         }
 
-        JsonResponse(res, 201, MSG_TYPES.FETCHED, shops, meta)
+        JsonResponse(res, 200, MSG_TYPES.FETCHED, shops, meta)
     } catch (error) {
         JsonResponse(res, error.statusCode, error.msg)
         next(error)

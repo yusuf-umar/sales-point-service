@@ -45,7 +45,7 @@ exports.getIngredientsByAdmin = async (req, res, next) => {
             }
         }
 
-        JsonResponse(res, 201, MSG_TYPES.FETCHED, ingredients, meta)
+        JsonResponse(res, 200, MSG_TYPES.FETCHED, ingredients, meta)
     } catch (error) {
         console.log({error})
         JsonResponse(res, error.statusCode, error.msg)
@@ -71,7 +71,7 @@ exports.getIngredients = async (req, res, next) => {
             }
         }
 
-        JsonResponse(res, 201, MSG_TYPES.FETCHED, ingredients, meta)
+        JsonResponse(res, 200, MSG_TYPES.FETCHED, ingredients, meta)
     } catch (error) {
         JsonResponse(res, error.statusCode, error.msg)
         next(error)

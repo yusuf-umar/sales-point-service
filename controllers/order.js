@@ -53,7 +53,7 @@ exports.getOrdersByShop = async(req, res, next) => {
             }
         }
 
-        JsonResponse(res, 201, MSG_TYPES.FETCHED, orders, meta)
+        JsonResponse(res, 200, MSG_TYPES.FETCHED, orders, meta)
     } catch(error) {
         JsonResponse(res, error.statusCode, error.msg)
         next(error)
@@ -78,7 +78,7 @@ exports.getOrdersByUser = async(req, res, next) => {
             }
         }
 
-        JsonResponse(res, 201, MSG_TYPES.FETCHED, orders, meta)
+        JsonResponse(res, 200, MSG_TYPES.FETCHED, orders, meta)
     } catch(error) {
         JsonResponse(res, error.statusCode, error.msg)
         next(error)

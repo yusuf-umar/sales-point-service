@@ -44,7 +44,7 @@ exports.getMenus = async (req, res, next) => {
             }
         }
 
-        JsonResponse(res, 201, MSG_TYPES.FETCHED, menus, meta)
+        JsonResponse(res, 200, MSG_TYPES.FETCHED, menus, meta)
     } catch (error) {
         JsonResponse(res, error.statusCode, error.msg)
         next(error)
@@ -61,9 +61,10 @@ exports.uploadFile = async (req, res, next) => {
 
         let menu = await MenuService.updateMenu(req.params.menuId, body, req.user)
 
-        JsonResponse(res, 201, MSG_TYPES.UPDATED, menu)
+        JsonResponse(res, 200, MSG_TYPES.UPDATED, menu)
     } catch (error) {
-
+        JsonResponse(res, error.statusCode, error.msg)
+        next(error)
     }
 }
 
@@ -89,7 +90,7 @@ exports.getMenusByUser = async (req, res, next) => {
             }
         }
 
-        JsonResponse(res, 201, MSG_TYPES.FETCHED, menus, meta)
+        JsonResponse(res, 200, MSG_TYPES.FETCHED, menus, meta)
     } catch (error) {
         console.log({ error })
         JsonResponse(res, error.statusCode, error.msg)
