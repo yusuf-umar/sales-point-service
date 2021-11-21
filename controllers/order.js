@@ -5,7 +5,7 @@ const { validateOrder } = require('../request/order')
 const OrderService = require("../services/order")
 
 
-exports.createOrder = (req, res, next) => {
+exports.createOrder = async(req, res, next) => {
     try {
         req.body.user = req.user._id
 
@@ -21,7 +21,7 @@ exports.createOrder = (req, res, next) => {
     }
 }
 
-exports.getOrder = (req, res, next) => {
+exports.getOrder = async(req, res, next) => {
     try {
         let filter = {
             _id: req.params.orderId
@@ -37,7 +37,7 @@ exports.getOrder = (req, res, next) => {
 }
 
 
-exports.getOrdersByShop = (req, res, next) => {
+exports.getOrdersByShop = async(req, res, next) => {
     try {
         let filter = {
             shop: req.params.shopId
@@ -62,7 +62,7 @@ exports.getOrdersByShop = (req, res, next) => {
 
 
 
-exports.getOrdersByUser = (req, res, next) => {
+exports.getOrdersByUser = async(req, res, next) => {
     try {
         let filter = {
             user: req.user._id
@@ -85,33 +85,11 @@ exports.getOrdersByUser = (req, res, next) => {
     }
 }
 
-exports.approveOrder = (req, res, next) => {
+exports.approveOrderOrCancelOrder = async(req, res, next) => {
     try {
-        let body = {
-            status: 'Approved'
-        }
+
         let filter = {
             _Id: req.params.orderId
-        }
-
-        const order = await OrderService.updateOrder(filter, body)
-
-        return JsonResponse(res, 200, MSG_TYPES.UPDATED, order);
-    } catch {
-        JsonResponse(res, error.statusCode, error.msg)
-        next(error)
-    }
-}
-
-
-exports.cancelOrder = (req, res, next) => {
-    try {
-        let body = {
-            status: 'Cancel'
-        }
-        let filter = {
-            _Id: req.params.orderId,
-            user: req.user._id
         }
 
         const order = await OrderService.updateOrder(filter, body)

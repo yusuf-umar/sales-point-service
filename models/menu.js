@@ -69,12 +69,12 @@ const menuSchema = new mongoose.Schema(
         },
         price:{
             type: Number,
-            required: tru,
+            required: true,
             min: 0
         },
         quantity:{
             type: Number,
-            required: tru,
+            required: true,
             min: 0
         },
         status:{
