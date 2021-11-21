@@ -15,7 +15,7 @@ exports.createOrder = async(req, res, next) => {
         let createOrder = await OrderService.create(req.body)
 
         JsonResponse(res, 201, MSG_TYPES.CREATED, createOrder)
-    } catch {
+    } catch(error) {
         JsonResponse(res, error.statusCode, error.msg)
         next(error)
     }
@@ -30,7 +30,7 @@ exports.getOrder = async(req, res, next) => {
         const order = await OrderService.getOrder(filter)
 
         JsonResponse(res, 200, MSG_TYPES.FETCHED, order)
-    } catch {
+    } catch(error) {
         JsonResponse(res, error.statusCode, error.msg)
         next(error)
     }
@@ -54,7 +54,7 @@ exports.getOrdersByShop = async(req, res, next) => {
         }
 
         JsonResponse(res, 201, MSG_TYPES.FETCHED, orders, meta)
-    } catch {
+    } catch(error) {
         JsonResponse(res, error.statusCode, error.msg)
         next(error)
     }
@@ -79,7 +79,7 @@ exports.getOrdersByUser = async(req, res, next) => {
         }
 
         JsonResponse(res, 201, MSG_TYPES.FETCHED, orders, meta)
-    } catch {
+    } catch(error) {
         JsonResponse(res, error.statusCode, error.msg)
         next(error)
     }
@@ -95,7 +95,7 @@ exports.approveOrderOrCancelOrder = async(req, res, next) => {
         const order = await OrderService.updateOrder(filter, body)
 
         return JsonResponse(res, 200, MSG_TYPES.UPDATED, order);
-    } catch {
+    } catch(error) {
         JsonResponse(res, error.statusCode, error.msg)
         next(error)
     }
