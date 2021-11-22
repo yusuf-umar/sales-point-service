@@ -3,7 +3,7 @@ const controller = require("../controllers");
 const { Auth, hasRole, ROLES } = require('../middlewares/auth');
 const { uploadS3 } = require('../utils/index')
 
-router.get("/", [Auth, hasRole(ROLES.USER)], controller.shop.getShops);
+router.get("/", controller.shop.getShops);
 
 router.get("/user", Auth, controller.shop.getShopByUser);
 

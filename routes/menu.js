@@ -4,7 +4,7 @@ const { Auth } = require('../middlewares/auth');
 const { uploadS3 } = require('../utils/index')
 
 
-router.get("/", Auth, controller.menu.getMenus);
+router.get("/", controller.menu.getMenus);
 
 router.get("/user", Auth, controller.menu.getMenusByUser);
 
