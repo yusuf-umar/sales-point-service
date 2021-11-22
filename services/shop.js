@@ -145,10 +145,15 @@ class ShopService {
         return new Promise(async (resolve, reject) => {
             try {
                 const shop = await Shop.findOne({
-                    user: user._id,
                     _id: shopId
                 })
                 if (!shop) {
+                    return reject({ statusCode: 404, msg: MSG_TYPES.NOT_FOUND })
+                }
+                const userDetails = await User.findOne({
+                    _id: user._id
+                });
+                if (!userDetails) {
                     return reject({ statusCode: 404, msg: MSG_TYPES.NOT_FOUND })
                 }
 

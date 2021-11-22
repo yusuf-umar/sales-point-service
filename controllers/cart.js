@@ -42,7 +42,7 @@ exports.getCartsByUser = async (req, res, next) => {
             user: req.user._id
         }
 
-        const {carts, total} = await CartService.getCart(filter)
+        const {carts, total} = await CartService.getCarts(filter)
 
         JsonResponse(res, 200, MSG_TYPES.FETCHED, carts, total)
     } catch (error) {

@@ -53,8 +53,15 @@ class CartService {
             try {
                 const carts = await Cart.find(filter).populate('menu')
 
-                const total = await Cart.find(filter).countDocuments()
-
+                let total = 0;
+                if(carts.length > 1) {
+                    for(let i = 0; i < carts.length; i++) {
+                        let cartTotal = carts[i].amount * cart[i].quantity;
+                        total += cartTotal;
+                    }
+                }else if (carts.length === 1){
+                    total = carts[0].amount * carts[0].quantity
+                }
                 resolve({ carts, total })
             } catch (error) {
                 console.log({ error })
