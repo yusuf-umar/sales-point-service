@@ -8,9 +8,9 @@ router.get("/", controller.menu.getMenus);
 
 router.get("/user", Auth, controller.menu.getMenusByUser);
 
-router.get("/category/:categoryId", Auth, controller.menu.getMenusByCategory);
+router.get("/category/:categoryId", controller.menu.getMenusByCategory);
 
-router.get("/:menuId", Auth, controller.menu.getMenu);
+router.get("/:menuId", controller.menu.getMenu);
 
 router.post("/", Auth, controller.menu.createMenu);
 
