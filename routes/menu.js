@@ -1,16 +1,20 @@
 const router = require("express").Router();
 const controller = require("../controllers");
 const { Auth } = require('../middlewares/auth');
+const { uploadS3 } = require('../utils/index')
+
 
 router.get("/", Auth, controller.menu.getMenus);
 
 router.get("/user", Auth, controller.menu.getMenusByUser);
 
+router.get("/category/:categoryId", Auth, controller.menu.getMenusByCategory);
+
 router.get("/:menuId", Auth, controller.menu.getMenu);
 
 router.post("/", Auth, controller.menu.createMenu);
 
-router.post("/upload-file/:menuId", Auth, controller.menu.uploadFile);
+router.patch("/upload-file/:menuId", Auth, uploadS3.single('image'),controller.menu.uploadFile);
 
 router.patch("/:menuId", Auth, controller.menu.updateMenu);
 

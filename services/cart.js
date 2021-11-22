@@ -1,5 +1,6 @@
 const { MSG_TYPES } = require('../constant/types');
 const Cart = require('../models/cart');
+const Menu = require('../models/menu');
 
 class CartService {
 
@@ -19,7 +20,7 @@ class CartService {
                         }
                     )
                 }
-
+                
                 const newOrder = new Cart(body)
                 await newOrder.save()
 

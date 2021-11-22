@@ -53,15 +53,19 @@ class MenuService {
         })
     }
 
-    static returnImages(file) {
+    static returnImage(file) {
         return new Promise(async (resolve, reject) => {
             try {
                 if (!file) {
                     return reject({ statusCode: 400, msg: MSG_TYPES.DOCUMENT_REQUIRED })
                 }
-                let asset = file;
+                let asset = {}
+                asset.type = file.metadata.filename;
+                asset.URL = file.location
+                asset.name = file.originalname
+                asset.fieldName = file.fieldName
 
-                resolve(assets)
+                resolve(asset)
             } catch (error) {
                 reject({ statusCode: 500, msg: MSG_TYPES.SERVER_ERROR, error })
             }

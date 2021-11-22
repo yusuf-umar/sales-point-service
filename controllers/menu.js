@@ -54,7 +54,8 @@ exports.getMenus = async (req, res, next) => {
 
 exports.uploadFile = async (req, res, next) => {
     try {
-        let asset = await MenuService.uploadFile(req.files)
+        console.log(req.file)
+        let asset = await MenuService.returnImage(req.file)
         let body={
             image: asset
         }
@@ -98,6 +99,35 @@ exports.getMenusByUser = async (req, res, next) => {
     }
 }
 
+/** 
+ * get Menus by category
+ * @param {*} req
+ * @param {*} res
+*/
+exports.getMenusByCategory = async (req, res, next) => {
+    try {
+        let filter = {
+            category: req.params.categoryId
+        }
+
+        const { page, pageSize, skip } = paginate(req);
+
+        const { menus, total } = await MenuService.getAllMenu(skip, pageSize, filter)
+
+        const meta = {
+            total,
+            pagination: {
+                pageSize, page
+            }
+        }
+
+        JsonResponse(res, 200, MSG_TYPES.FETCHED, menus, meta)
+    } catch (error) {
+        console.log({ error })
+        JsonResponse(res, error.statusCode, error.msg)
+        next(error)
+    }
+}
 
 /** 
  * get Menu
