@@ -19,6 +19,8 @@ class CartService {
                             }
                         }
                     )
+
+                    return resolve(cart)
                 }
                 
                 const newOrder = new Cart(body)
@@ -52,12 +54,12 @@ class CartService {
     static getCarts(filter) {
         return new Promise(async (resolve, reject) => {
             try {
-                const carts = await Cart.find(filter).populate('menu')
+                const carts = await Cart.find(filter).populate({path: 'menu',populate:{path:'shop ingredients category'}})
 
                 let total = 0;
                 if(carts.length > 1) {
                     for(let i = 0; i < carts.length; i++) {
-                        let cartTotal = carts[i].amount * cart[i].quantity;
+                        let cartTotal = carts[i].amount * carts[i].quantity;
                         total += cartTotal;
                     }
                 }else if (carts.length === 1){
@@ -74,6 +76,7 @@ class CartService {
     static removeCart(cartId, user) {
         return new Promise(async (resolve, reject) => {
             try {
+                console.log(cartId)
                 const cart = await Cart.findOne({ 
                     _id: cartId,
                     user: user._id

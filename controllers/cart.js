@@ -68,7 +68,7 @@ exports.deleteCart = async (req, res, next) => {
     try {
         const cartId = req.params.cartId;
 
-        const cart = await CartService.removeCart(req.user, categoryId)
+        await CartService.removeCart(cartId, req.user)
 
         return JsonResponse(res, 200, MSG_TYPES.DELETED)  
     } catch (error) {
