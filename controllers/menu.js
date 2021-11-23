@@ -178,7 +178,7 @@ exports.deleteMenu = async (req, res, next) => {
     try {
         const menuId = req.params.menuId;
 
-        const menu = await MenuService.deleteMenu(req.user, menuId);
+        await MenuService.deleteMenu(req.user, menuId);
 
         return JsonResponse(res, 200, MSG_TYPES.DELETED);
     } catch (error) {

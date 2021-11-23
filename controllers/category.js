@@ -127,7 +127,7 @@ exports.deleteCategory = async (req, res, next) => {
     try {
         const categoryId = req.params.categoryId;
 
-        const category = await CategoryService.deleteCategory(req.user, categoryId)
+        await CategoryService.deleteCategory(req.user, categoryId)
 
         return JsonResponse(res, 200, MSG_TYPES.DELETED)
     } catch (error) {
