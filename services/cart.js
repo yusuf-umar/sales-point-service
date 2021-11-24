@@ -68,7 +68,7 @@ class CartService {
 
                         if(carts[i].menu.ingredients.length > 0){
                             for(let x=0;x<carts[i].menu.ingredients.length;x++){
-                                let caloriesTotal = carts[i].menu.ingredients[x].calorie;
+                                let caloriesTotal = carts[i].menu.ingredients[x].calorie * carts[i].quantity;
                                 calories += caloriesTotal;
                             }
                         }else if(carts[i].menu.ingredients.length === 1){
@@ -82,7 +82,7 @@ class CartService {
 
                     if(carts[0].menu.ingredients.length > 0){
                         for(let i=0;i<carts[0].menu.ingredients.length;i++){
-                            let caloriesTotal = carts[0].menu.ingredients[i].calorie;
+                            let caloriesTotal = carts[0].menu.ingredients[i].calorie * carts[0].quantity;
                             calories += caloriesTotal;
                         }
                     }else if(carts[0].menu.ingredients.length === 1){
