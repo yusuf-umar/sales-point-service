@@ -92,7 +92,7 @@ exports.approveOrderOrCancelOrder = async(req, res, next) => {
             _Id: req.params.orderId
         }
 
-        const order = await OrderService.updateOrder(filter, body)
+        const order = await OrderService.updateOrder(filter, req.body)
 
         return JsonResponse(res, 200, MSG_TYPES.UPDATED, order);
     } catch(error) {
