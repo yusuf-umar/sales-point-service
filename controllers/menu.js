@@ -195,8 +195,11 @@ exports.deleteMenu = async (req, res, next) => {
 exports.searchMenu = async (req, res, next) => {
     try {
         let filter = {
-            name: req.params.name
+            name: {
+                '$regex': req.params.name
+            }
         }
+
         const { page, pageSize, skip } = paginate(req);
 
         const { menus, total } = await MenuService.getAllMenu(skip, pageSize, filter)
