@@ -170,7 +170,7 @@ exports.updateMenu = async (req, res, next) => {
 }
 
 /** 
- * delete Shop
+ * delete Menu
  * @param {*} req
  * @param {*} res
 */
@@ -181,6 +181,34 @@ exports.deleteMenu = async (req, res, next) => {
         await MenuService.deleteMenu(req.user, menuId);
 
         return JsonResponse(res, 200, MSG_TYPES.DELETED);
+    } catch (error) {
+        JsonResponse(res, error.statusCode, error.msg)
+        next(error)
+    }
+}
+
+/** 
+ * search Menu
+ * @param {*} req
+ * @param {*} res
+*/
+exports.searchMenu = async (req, res, next) => {
+    try {
+        let filter = {
+            name: req.params.name
+        }
+        const { page, pageSize, skip } = paginate(req);
+
+        const { menus, total } = await MenuService.getAllMenu(skip, pageSize, filter)
+
+        const meta = {
+            total,
+            pagination: {
+                pageSize, page
+            }
+        }
+
+        return JsonResponse(res, 200, MSG_TYPES.FETCHED, menus, meta);
     } catch (error) {
         JsonResponse(res, error.statusCode, error.msg)
         next(error)

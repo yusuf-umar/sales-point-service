@@ -20,4 +20,6 @@ router.patch("/:menuId", Auth, controller.menu.updateMenu);
 
 router.delete("/:menuId", Auth, controller.menu.deleteMenu);
 
+router.get("/search/:name", controller.menu.searchMenu);
+
 module.exports = router

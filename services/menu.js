@@ -22,6 +22,7 @@ class MenuService {
                 }
 
                 const newMenu = new Menu(body);
+                newMenu.name.toLowerCase();
 
                 await newMenu.save();
 
