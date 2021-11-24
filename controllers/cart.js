@@ -42,9 +42,14 @@ exports.getCartsByUser = async (req, res, next) => {
             user: req.user._id
         }
 
-        const {carts, total} = await CartService.getCarts(filter)
+        const {carts, total, calories, caloriesUnit} = await CartService.getCarts(filter)
 
-        JsonResponse(res, 200, MSG_TYPES.FETCHED, carts, total)
+        let metadata = {
+            total,
+            calories,
+            caloriesUnit
+        }
+        JsonResponse(res, 200, MSG_TYPES.FETCHED, carts, metadata)
     } catch (error) {
         JsonResponse(res, error.statusCode, error.msg)
         next(error)
