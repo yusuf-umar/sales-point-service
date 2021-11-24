@@ -35,10 +35,12 @@ const orderSchema = new mongoose.Schema(
         },
         status:{
             type: String,
-            enum:['Approved','Delivered', 'On-route','Waiting','Cancel'],
+            enum:['Approved','Delivered', 'On-route','Waiting','Shop-Cancel'],
             default: 'Waiting'
         },
-        
+    },
+    {
+        timestamps: true,
     }
 )
 

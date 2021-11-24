@@ -23,6 +23,9 @@ const ingredientSchema = new mongoose.Schema(
             type: String,
             default: "gram"
         }
+    },
+    {
+        timestamps: true,
     }
 )
 

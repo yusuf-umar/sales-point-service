@@ -13,6 +13,9 @@ const categorySchema = new mongoose.Schema(
             required: true,
             index: true
         }
+    },
+    {
+        timestamps: true,
     }
 )
 

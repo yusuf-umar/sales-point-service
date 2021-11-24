@@ -77,6 +77,9 @@ const menuSchema = new mongoose.Schema(
             emun: ['avaiable', 'sold-out']
         },
         image: assestSchema
+    },
+    {
+        timestamps: true,
     }
 )
 
