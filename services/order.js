@@ -31,7 +31,7 @@ class OrderService {
         return new Promise(async (resolve, reject) => {
             try {
                 const orders = await Order.find(filter)
-                    .skip(skip).limit(pageSize)
+                    .skip(skip).limit(pageSize).populate('user shop menu')
 
                 const total = await Order.find(filter).countDocuments()
 
