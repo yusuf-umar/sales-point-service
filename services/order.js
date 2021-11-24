@@ -66,6 +66,7 @@ class OrderService {
         return new Promise(async (resolve, reject) => {
             try {
                 const order = await Order.findOne(filter)
+
                 if (!order) {
                     return reject({ statusCode: 404, msg: MSG_TYPES.NOT_FOUND })
                 }

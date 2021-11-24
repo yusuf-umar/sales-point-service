@@ -89,7 +89,7 @@ exports.approveOrderOrCancelOrder = async(req, res, next) => {
     try {
 
         let filter = {
-            _Id: req.params.orderId
+            _id: req.params.orderId
         }
 
         const order = await OrderService.updateOrder(filter, req.body)
