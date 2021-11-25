@@ -196,14 +196,7 @@ exports.searchMenu = async (req, res, next) => {
     try {
         let filter = {
             name: {
-                '$regex': req.query.name
-            },
-            price:{
-                $gt: req.query.max,
-                $lt: req.query.min,
-            },
-            "shop.postCode":{
-                '$regex': req.query.name
+                '$regex': req.params.name
             }
         }
 
@@ -227,23 +220,11 @@ exports.searchMenu = async (req, res, next) => {
     }
 }
 
-exports.searchPriceandPostCodeMenu = async (req, res, next) => {
+exports.find = async (req, res, next) => {
     try {
-        let filter = {
-            price:{
-                $gte: req.query.max,
-                $lt: req.query.min,
-            },
-            // "shop.postCode":{
-            //     '$regex': req.query.postCode
-            // }
-        }
-
-        console.log(filter)
-
         const { page, pageSize, skip } = paginate(req);
 
-        const { menus, total } = await MenuService.getAllMenu(skip, pageSize, filter)
+        const { menus, total } = await MenuService.getAllMenu(skip, pageSize, req.body.filter)
 
         const meta = {
             total,
