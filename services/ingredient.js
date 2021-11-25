@@ -48,7 +48,6 @@ class IngredientService {
         return new Promise(async (resolve, reject) => {
             try {
                 const ingredients = await Ingredient.find(filter)
-                .skip(skip).limit(pageSize)
 
                 const total = await Ingredient.find(filter).countDocuments()
 

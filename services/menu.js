@@ -42,8 +42,7 @@ class MenuService {
     static getAllMenu(skip, pageSize, filter = {}) {
         return new Promise(async (resolve, reject) => {
             try {
-                const menus = await Menu.find(filter)
-                    .skip(skip).limit(pageSize).populate('category shop ingredients')
+                const menus = await Menu.find(filter).populate('category shop ingredients')
 
                 const total = await Menu.find(filter).countDocuments()
 

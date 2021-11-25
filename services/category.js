@@ -47,7 +47,6 @@ class CategoryService {
         return new Promise(async (resolve, reject) => {
             try {
                 const categories = await Category.find(filter)
-                .skip(skip).limit(pageSize)
 
                 const total = await Category.find(filter).countDocuments()
 

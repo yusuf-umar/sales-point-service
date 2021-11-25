@@ -69,7 +69,7 @@ exports.getOrdersByUser = async(req, res, next) => {
         }
         const { page, pageSize, skip } = paginate(req);
 
-        const { orders, total } = await OrderService.getAllOrders(skip, pageSize, filter)
+        const { orders, total } = await OrderService.getAllOrders(filter)
 
         const meta = {
             total,

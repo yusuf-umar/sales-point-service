@@ -70,7 +70,6 @@ class ShopService {
         return new Promise(async (resolve, reject) => {
             try {
                 const shops = await Shop.find(filter)
-                    .skip(skip).limit(pageSize)
 
                 const total = await Shop.find(filter).countDocuments()
 
