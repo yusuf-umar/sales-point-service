@@ -35,7 +35,7 @@ exports.getMenus = async (req, res, next) => {
     try {
         const { page, pageSize, skip } = paginate(req);
 
-        const { menus, total } = await MenuService.getAllMenu(skip, pageSize, req.body)
+        const { menus, total } = await MenuService.getAllMenu(skip, pageSize, req.query)
 
         const meta = {
             total,
@@ -196,9 +196,50 @@ exports.searchMenu = async (req, res, next) => {
     try {
         let filter = {
             name: {
-                '$regex': req.params.name
+                '$regex': req.query.name
+            },
+            price:{
+                $gt: req.query.max,
+                $lt: req.query.min,
+            },
+            "shop.postCode":{
+                '$regex': req.query.name
             }
         }
+
+        console.log(filter)
+
+        const { page, pageSize, skip } = paginate(req);
+
+        const { menus, total } = await MenuService.getAllMenu(skip, pageSize, filter)
+
+        const meta = {
+            total,
+            pagination: {
+                pageSize, page
+            }
+        }
+
+        return JsonResponse(res, 200, MSG_TYPES.FETCHED, menus, meta);
+    } catch (error) {
+        JsonResponse(res, error.statusCode, error.msg)
+        next(error)
+    }
+}
+
+exports.searchPriceandPostCodeMenu = async (req, res, next) => {
+    try {
+        let filter = {
+            price:{
+                $gte: req.query.max,
+                $lt: req.query.min,
+            },
+            // "shop.postCode":{
+            //     '$regex': req.query.postCode
+            // }
+        }
+
+        console.log(filter)
 
         const { page, pageSize, skip } = paginate(req);
 

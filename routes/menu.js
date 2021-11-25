@@ -3,6 +3,9 @@ const controller = require("../controllers");
 const { Auth } = require('../middlewares/auth');
 const { uploadS3 } = require('../utils/index')
 
+router.get("/search", controller.menu.searchMenu);
+
+router.get("/search-price-postCode", controller.menu.searchPriceandPostCodeMenu);
 
 router.get("/", controller.menu.getMenus);
 
@@ -20,6 +23,5 @@ router.patch("/:menuId", Auth, controller.menu.updateMenu);
 
 router.delete("/:menuId", Auth, controller.menu.deleteMenu);
 
-router.get("/search/:name", controller.menu.searchMenu);
 
 module.exports = router
