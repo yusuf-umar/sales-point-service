@@ -9,6 +9,18 @@ const orderSchema = new mongoose.Schema(
             required: true,
             ref: 'User'
         },
+        address:{
+            type: String,
+            required: true,
+        },
+        orderId:{
+            type: String, 
+            required: true
+        },
+        paymentMethod:{
+            type: String, 
+            required: true
+        },
         shop: {
             type: objectId,
             required: true,
@@ -28,6 +40,15 @@ const orderSchema = new mongoose.Schema(
             type: Number,
             required: true,
             min: 0
+        },
+        calorie:{
+            type: Number, 
+            required: true,
+            min: 0
+        },
+        calorieUnit:{
+            type: String,
+            default: "gram"
         },
         currency:{
             type: String,

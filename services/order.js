@@ -1,5 +1,7 @@
 const Order = require("../models/order")
+const MenuService = require('../services/menu');
 const { MSG_TYPES } = require('../constant/types');
+const { GenerateOTP } = require('../utils/index.js')
 
 class OrderService {
 
@@ -10,6 +12,24 @@ class OrderService {
     static create(body) {
         return new Promise(async (resolve, reject) => {
             try {
+                let filter = {
+                    _id: body.menu
+                }
+                const menu = await MenuService.getMenu(filter);
+                let calorie = 0
+                
+                if(menu.ingredients.length > 1){    
+                    for(let i=0; i < menu.ingredients.length; i++){
+                        let caloriesTotal = menu.ingredients[i].calorie * body.quantity;
+                        calorie += caloriesTotal;
+                    }
+                    body.calorie = calorie;
+                }else{
+                    let caloriesTotal = menu.ingredients[0].calorie * body.quantity;
+                    body.calorie = caloriesTotal;
+                }
+                body.calorieUnit = menu.ingredients[0].calorieUnit;
+                body.orderId = 'SP-'+ GenerateOTP(10);
                 const newOrder = new Order(body);
 
                 await newOrder.save();

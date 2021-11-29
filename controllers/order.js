@@ -16,6 +16,7 @@ exports.createOrder = async(req, res, next) => {
 
         JsonResponse(res, 201, MSG_TYPES.CREATED, createOrder)
     } catch(error) {
+        console.log({error})
         JsonResponse(res, error.statusCode, error.msg)
         next(error)
     }

@@ -8,6 +8,8 @@ function validateOrder(body){
         menu: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
         quantity: Joi.number().min(0).required(),
         total: Joi.number().min(0).required(),
+        address: Joi.string().required(),
+        paymentMethod: Joi.string().required(),
     })
 
     return orderSchema.validate(body)

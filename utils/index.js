@@ -19,6 +19,12 @@ GenerateCode = (num) => {
   return token;
 };
 
+GenerateOTP = (num) => {
+  const OTPCode = new RandExp(`[0-9]{${num}}`).gen();
+
+  return OTPCode;
+};
+
 const paginate = (req) => {
   const page =
     typeof req.query.page !== "undefined" ? Math.abs(req.query.page) : 1;
@@ -107,5 +113,6 @@ module.exports = {
   paginate,
   GenerateCode,
   mailSender,
-  uploadS3
+  uploadS3,
+  GenerateOTP
 };
