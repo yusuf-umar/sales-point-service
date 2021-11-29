@@ -117,7 +117,7 @@ class AuthService {
                 let subject = "Account Verification Link"
                 let textpart = "Please Click on verify your account"
                 let HTMLPart = 'Hello ' + req.body.name + ',\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host +
-                    '\/user\/confirmation\/' + newUser.email + '\/' + newUser.rememberToken.token + '\n\nThank You!\n';
+                    '\/user\/confirmation\/' + updateUser.email + '\/' + updateUser.rememberToken.token + '\n\nThank You!\n';
 
                 await mailSender(to, subject, textpart, HTMLPart)
 
