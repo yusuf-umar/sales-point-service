@@ -8,7 +8,7 @@ class ShopService {
      * Create Shop 
      * @param {Object} body request body object
     */
-    static create(body, files) {
+    static create(body) {
         return new Promise(async (resolve, reject) => {
             try {
                 const shop = await Shop.findOne({
@@ -66,7 +66,7 @@ class ShopService {
      * @param {Number} pageSize page size
      * @param {Object} filter filter
     */
-    static getAllShop(skip, pageSize, filter = {}) {
+    static getAllShop(filter = {}) {
         return new Promise(async (resolve, reject) => {
             try {
                 const shops = await Shop.find(filter)

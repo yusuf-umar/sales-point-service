@@ -3,7 +3,7 @@ const controller = require("../controllers");
 const { Auth } = require('../middlewares/auth');
 const { uploadS3 } = require('../utils/index')
 
-router.get("/find", controller.menu.find);
+router.patch("/find", controller.menu.find);
 
 router.get("/", controller.menu.getMenus);
 

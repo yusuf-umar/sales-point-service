@@ -54,7 +54,7 @@ exports.getShops = async (req, res, next) => {
     try {
         const { page, pageSize, skip } = paginate(req);
 
-        const { shops, total } = await ShopService.getAllShop(skip, pageSize, req.body)
+        const { shops, total } = await ShopService.getAllShop(req.body)
 
         const meta = {
             total,
@@ -100,10 +100,9 @@ exports.getShopByUser = async (req, res, next) => {
         let filter = {
             user: req.user._id
         }
-
         const { page, pageSize, skip } = paginate(req);
 
-        const { shops, total } = await ShopService.getAllShop(skip, pageSize, filter)
+        const { shops, total } = await ShopService.getAllShop(filter)
 
         const meta = {
             total,

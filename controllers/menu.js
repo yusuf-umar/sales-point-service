@@ -34,8 +34,11 @@ exports.createMenu = async (req, res, next) => {
 exports.getMenus = async (req, res, next) => {
     try {
         const { page, pageSize, skip } = paginate(req);
-
-        const { menus, total } = await MenuService.getAllMenu(skip, pageSize, req.query)
+        let filter = {
+            approvalStatus: true
+        }
+        
+        const { menus, total } = await MenuService.getAllMenu(skip, pageSize, filter)
 
         const meta = {
             total,
@@ -46,6 +49,7 @@ exports.getMenus = async (req, res, next) => {
 
         JsonResponse(res, 200, MSG_TYPES.FETCHED, menus, meta)
     } catch (error) {
+        console.log({error})
         JsonResponse(res, error.statusCode, error.msg)
         next(error)
     }
@@ -222,6 +226,7 @@ exports.searchMenu = async (req, res, next) => {
 
 exports.find = async (req, res, next) => {
     try {
+        console.log(req.body.filter)
         const { page, pageSize, skip } = paginate(req);
 
         const { menus, total } = await MenuService.getAllMenu(skip, pageSize, req.body.filter)
@@ -235,6 +240,7 @@ exports.find = async (req, res, next) => {
 
         return JsonResponse(res, 200, MSG_TYPES.FETCHED, menus, meta);
     } catch (error) {
+        console.log({error})
         JsonResponse(res, error.statusCode, error.msg)
         next(error)
     }

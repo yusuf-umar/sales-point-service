@@ -6,6 +6,8 @@ router.patch('/cancel/:orderId', Auth,controller.order.approveOrderOrCancelOrder
 
 router.get('/user', Auth,controller.order.getOrdersByUser);
 
+router.get('/find', Auth,controller.order.getOrdersByUserfind);
+
 router.post("/",Auth, controller.order.createOrder)
 
 router.get("/:orderId", Auth,controller.order.getOrder)

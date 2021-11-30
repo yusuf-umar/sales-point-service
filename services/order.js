@@ -1,8 +1,10 @@
 const Order = require("../models/order")
 const MenuService = require('../services/menu');
 const { MSG_TYPES } = require('../constant/types');
-const { GenerateOTP } = require('../utils/index.js')
-
+const { GenerateOTP, mailSender } = require('../utils/index.js');
+const SendReceipt = require('../templates/reciptTemplate');
+const User = require('../models/user');
+const Menu = require('../models/menu');
 class OrderService {
 
     /**
@@ -32,6 +34,17 @@ class OrderService {
                 body.orderId = 'SP-'+ GenerateOTP(10);
                 const newOrder = new Order(body);
 
+                const user = await User.findById(newOrder.user)
+                console.log(menu)
+                let to = {
+                    "Email": user.email,
+                    "Name": user.name
+                };
+                let subject = "Receipt";
+                let textpart = "Order Receipt"
+                const html = SendReceipt(newOrder, menu, user)
+                await mailSender(to, subject,textpart, html)
+
                 await newOrder.save();
 
                 resolve(newOrder)
@@ -47,10 +60,10 @@ class OrderService {
      * @param {Number} pageSize page size
      * @param {Object} filter filter
     */
-    static getAllOrders(skip, pageSize, filter = {}) {
+    static getAllOrders(filter) {
         return new Promise(async (resolve, reject) => {
             try {
-                const orders = await Order.find(filter).populate('user shop menu')
+                const orders = await Order.find(filter).populate('user shop menu').sort({createdAt: -1})
 
                 const total = await Order.find(filter).countDocuments()
 

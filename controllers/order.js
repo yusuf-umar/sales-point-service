@@ -3,6 +3,7 @@ const { JsonResponse } = require("../lib/apiResponse");
 const { paginate } = require("../utils/index");
 const { validateOrder } = require('../request/order')
 const OrderService = require("../services/order")
+const moment = require('moment');
 
 
 exports.createOrder = async(req, res, next) => {
@@ -45,7 +46,7 @@ exports.getOrdersByShop = async(req, res, next) => {
         }
         const { page, pageSize, skip } = paginate(req);
 
-        const { orders, total } = await OrderService.getAllOrders(skip, pageSize, filter)
+        const { orders, total } = await OrderService.getAllOrders(filter)
 
         const meta = {
             total,
@@ -70,6 +71,32 @@ exports.getOrdersByUser = async(req, res, next) => {
         }
         const { page, pageSize, skip } = paginate(req);
 
+        const { orders, total } = await OrderService.getAllOrders(filter)
+
+        const meta = {
+            total,
+            pagination: {
+                pageSize, page
+            }
+        }
+
+        JsonResponse(res, 200, MSG_TYPES.FETCHED, orders, meta)
+    } catch(error) {
+        JsonResponse(res, error.statusCode, error.msg)
+        next(error)
+    }
+}
+
+exports.getOrdersByUserfind = async(req, res, next) => {
+    try {
+        let filter = {
+            user: req.user._id,
+            createdAt:{
+                $gt: new Date(new Date().setUTCHours(0,0,0,0))
+            }
+        }
+        const { page, pageSize, skip } = paginate(req);
+        
         const { orders, total } = await OrderService.getAllOrders(filter)
 
         const meta = {
