@@ -17,7 +17,7 @@ function validateUser(body) {
         password: passwordComplexity(complexityOption).required(),
         name: Joi.string().required(),
         phoneNumber: Joi.string().required(),
-        gender: Joi.string().enum('M','F').required(),
+        gender: Joi.string().valid('M','F').required(),
         role: Joi.string().valid('administator','user').required()
     });
 
