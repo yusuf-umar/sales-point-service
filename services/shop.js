@@ -87,7 +87,7 @@ class ShopService {
     static getShop(filter) {
         return new Promise(async (resolve, reject) => {
             try {
-                const shop = await Shop.findOne(filter);
+                const shop = await Shop.findOne(filter).populate('user');
 
                 if (!shop) {
                     return reject({ statusCode: 404, msg: MSG_TYPES.NOT_FOUND })
