@@ -13,8 +13,7 @@ class UserService {
         return new Promise(async (resolve, reject) => {
             try {
                 const user = await User.findOne({
-                    email: body.email,
-                    name: body.name,
+                    email: body.email
                 })
 
                 if (user) {
@@ -138,8 +137,8 @@ class UserService {
                         $set: userObject
                     }
                 )
-                
-                await this.calculateBMI(user);
+
+                await this.calculateBMI(userId);
 
                 resolve(user)
             } catch (error) {
@@ -148,13 +147,17 @@ class UserService {
         })
     }
 
-    static calculateBMI(user) {
+    static calculateBMI(userId) {
         return new Promise(async (resolve, reject) => {
             try {
+                const user = await User.findById(userId)
+                
                 if (user.currentWeight && user.currentHeight) {
-                    let currentBMI = user.currentWeight / user.currentHeight * user.currentHeight
+                    const heightConversion = this.unitConversions(user.heightUnit);
+                    const weightConversion = this.unitConversions(user.weightUnit);
+                    
+                    let currentBMI = (user.currentWeight*weightConversion) / (user.currentHeight*heightConversion) * (user.currentHeight*heightConversion)
                     let currentBMICategory = this.returnCategoryBMI(currentBMI)
-                    console.log(currentBMI)
                     await user.updateOne(
                         {
                             $set: {
@@ -165,10 +168,12 @@ class UserService {
                     );
                 }
 
-                if(user.targetWeight && user.targetHeight){
-                    let targetBMI = user.targetWeight / user.targetHeight * user.targetHeight;
+                if (user.targetWeight && user.targetHeight) {
+                    const heightConversion = this.unitConversions(user.heightUnit);
+                    const weightConversion = this.unitConversions(user.weightUnit);
+
+                    let targetBMI = (user.targetWeight*weightConversion) / (user.targetHeight*heightConversion) * (user.targetHeight*heightConversion);
                     let targetBMICategory = this.returnCategoryBMI(targetBMI);
-                    console.log(targetBMI)
 
                     await user.updateOne(
                         {
@@ -186,20 +191,38 @@ class UserService {
             }
         })
     }
-    
+
     static returnCategoryBMI(BMI) {
         let categoryBMI = ""
         if (BMI < 18.5) {
             categoryBMI = 'UnderWeight'
-        } else if (BMI > 18.5  && BMI < 24.9) {
+        } else if (BMI > 18.5 && BMI < 24.9) {
             categoryBMI = 'Normal'
-        } else if (BMI > 25  && BMI < 29.9) {
+        } else if (BMI > 25 && BMI < 29.9) {
             categoryBMI = 'OverWeight'
         } else {
             categoryBMI = 'Obese'
         }
 
         return categoryBMI
+    }
+
+    static unitConversions(unit){
+        let conversion = 0;
+        if (unit === 'm' || unit === 'kg'){
+            conversion = 1;
+        }else if (unit === 'ft'){
+            conversion = 0.3048
+        }else if (unit === 'cm'){
+            conversion = 0.01
+        }else if(unit == 'g'){
+            conversion = 0.001;
+        }else if(unit == 'lbs'){
+            conversion = 0.454;
+        }else{
+            'invalid Unit'
+        }
+        return conversion;
     }
 
     /**
