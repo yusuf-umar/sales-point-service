@@ -151,7 +151,7 @@ class UserService {
         return new Promise(async (resolve, reject) => {
             try {
                 const user = await User.findById(userId)
-                
+
                 if (user.currentWeight && user.currentHeight) {
                     const heightConversion = this.unitConversions(user.heightUnit);
                     const weightConversion = this.unitConversions(user.weightUnit);

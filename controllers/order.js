@@ -6,7 +6,7 @@ const OrderService = require("../services/order")
 const moment = require('moment');
 
 
-exports.createOrder = async(req, res, next) => {
+exports.createOrder = async (req, res, next) => {
     try {
         req.body.user = req.user._id
 
@@ -16,14 +16,34 @@ exports.createOrder = async(req, res, next) => {
         let createOrder = await OrderService.create(req.body)
 
         JsonResponse(res, 201, MSG_TYPES.CREATED, createOrder)
-    } catch(error) {
-        console.log({error})
+    } catch (error) {
+        console.log({ error })
         JsonResponse(res, error.statusCode, error.msg)
         next(error)
     }
 }
 
-exports.getOrder = async(req, res, next) => {
+exports.getOrders = async (req, res, next) => {
+    try {
+        const { page, pageSize, skip } = paginate(req);
+
+        const { orders, total } = await OrderService.getAllOrders();
+
+        const meta = {
+            total,
+            pagination: {
+                pageSize, page
+            }
+        };
+
+        JsonResponse(res, 200, MSG_TYPES.FETCHED, orders, meta)
+    } catch (error) {
+        JsonResponse(res, error.statusCode, error.msg)
+        next(error)
+    }
+}
+
+exports.getOrder = async (req, res, next) => {
     try {
         let filter = {
             _id: req.params.orderId
@@ -32,14 +52,14 @@ exports.getOrder = async(req, res, next) => {
         const order = await OrderService.getOrder(filter)
 
         JsonResponse(res, 200, MSG_TYPES.FETCHED, order)
-    } catch(error) {
+    } catch (error) {
         JsonResponse(res, error.statusCode, error.msg)
         next(error)
     }
 }
 
 
-exports.getOrdersByShop = async(req, res, next) => {
+exports.getOrdersByShop = async (req, res, next) => {
     try {
         let filter = {
             shop: req.params.shopId
@@ -56,7 +76,7 @@ exports.getOrdersByShop = async(req, res, next) => {
         }
 
         JsonResponse(res, 200, MSG_TYPES.FETCHED, orders, meta)
-    } catch(error) {
+    } catch (error) {
         JsonResponse(res, error.statusCode, error.msg)
         next(error)
     }
@@ -64,7 +84,7 @@ exports.getOrdersByShop = async(req, res, next) => {
 
 
 
-exports.getOrdersByUser = async(req, res, next) => {
+exports.getOrdersByUser = async (req, res, next) => {
     try {
         let filter = {
             user: req.user._id
@@ -81,22 +101,22 @@ exports.getOrdersByUser = async(req, res, next) => {
         }
 
         JsonResponse(res, 200, MSG_TYPES.FETCHED, orders, meta)
-    } catch(error) {
+    } catch (error) {
         JsonResponse(res, error.statusCode, error.msg)
         next(error)
     }
 }
 
-exports.getOrdersByUserfind = async(req, res, next) => {
+exports.getOrdersByUserfind = async (req, res, next) => {
     try {
         let filter = {
             user: req.user._id,
-            createdAt:{
-                $gt: new Date(new Date().setUTCHours(0,0,0,0))
+            createdAt: {
+                $gt: new Date(new Date().setUTCHours(0, 0, 0, 0))
             }
         }
         const { page, pageSize, skip } = paginate(req);
-        
+
         const { orders, total } = await OrderService.getAllOrders(filter)
 
         const meta = {
@@ -107,13 +127,13 @@ exports.getOrdersByUserfind = async(req, res, next) => {
         }
 
         JsonResponse(res, 200, MSG_TYPES.FETCHED, orders, meta)
-    } catch(error) {
+    } catch (error) {
         JsonResponse(res, error.statusCode, error.msg)
         next(error)
     }
 }
 
-exports.approveOrderOrCancelOrder = async(req, res, next) => {
+exports.approveOrderOrCancelOrder = async (req, res, next) => {
     try {
 
         let filter = {
@@ -123,7 +143,7 @@ exports.approveOrderOrCancelOrder = async(req, res, next) => {
         const order = await OrderService.updateOrder(filter, req.body)
 
         return JsonResponse(res, 200, MSG_TYPES.UPDATED, order);
-    } catch(error) {
+    } catch (error) {
         JsonResponse(res, error.statusCode, error.msg)
         next(error)
     }

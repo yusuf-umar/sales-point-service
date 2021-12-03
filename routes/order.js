@@ -10,6 +10,8 @@ router.get('/find', Auth,controller.order.getOrdersByUserfind);
 
 router.post("/",Auth, controller.order.createOrder)
 
+router.get("/", Auth, controller.order.getOrders)
+
 router.get("/:orderId", Auth,controller.order.getOrder)
 
 router.get("/shop/:shopId", Auth, controller.order.getOrdersByShop)

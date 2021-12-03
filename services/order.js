@@ -60,7 +60,7 @@ class OrderService {
      * @param {Number} pageSize page size
      * @param {Object} filter filter
     */
-    static getAllOrders(filter) {
+    static getAllOrders(filter = {}) {
         return new Promise(async (resolve, reject) => {
             try {
                 const orders = await Order.find(filter).populate('user shop menu').sort({createdAt: -1})

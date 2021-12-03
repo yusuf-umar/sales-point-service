@@ -11,8 +11,6 @@ const userSchema = new mongoose.Schema(
             type: String,
             index: true,
             required: true,
-            minlength: 5,
-            maxlength: 50,
             lowercase: true,
         },
         name: {
@@ -24,10 +22,6 @@ const userSchema = new mongoose.Schema(
             type: String,
             enum: ['M', 'F'],
             required: true
-        },
-        username: {
-            type: String,
-            maxlength: 30,
         },
         phoneNumber: {
             type: String,

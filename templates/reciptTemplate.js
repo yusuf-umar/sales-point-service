@@ -94,19 +94,3 @@ const sentReceipt = (order, menu, user) => {
 };
 
 module.exports = sentReceipt
-
-{/* <div>
-<p>Order number: ${ order.orderId }</p>
-<p>Shop: ${ menu.shop.name }</p>
-<p>Billing Address: ${ order.address }</p>
-<p>Payment Method: ${ order.paymentMethod }</p>
-</div>
-<div>
-<img src=${menu.image.URL} />
-<div>
-    <p>${menu.name}</p>
-    <p>Qty: ${order.quantity}</p>
-    <p>Cummulated Calories: ${order.calorie}${order.calorieUnit}</p>
-</div>
-<p>${order.currency}${order.total}</p>
-</div> */}
