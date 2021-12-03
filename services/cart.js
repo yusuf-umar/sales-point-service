@@ -66,28 +66,14 @@ class CartService {
                         total += cartTotal;
                         caloriesUnit = carts[0].menu.ingredients[0].calorieUnit
 
-                        if(carts[i].menu.ingredients.length > 0){
-                            for(let x=0;x<carts[i].menu.ingredients.length;x++){
-                                let caloriesTotal = carts[i].menu.ingredients[x].calorie * carts[i].quantity;
-                                calories += caloriesTotal;
-                            }
-                        }else if(carts[i].menu.ingredients.length === 1){
-                            calories = carts[i].menu.ingredients[0].calories;
-                        }
+                        calories += this.calculateCalories(carts[i])    
                     }
 
                 }else if (carts.length === 1){
                     total = carts[0].amount * carts[0].quantity
                     caloriesUnit = carts[0].menu.ingredients[0].calorieUnit
 
-                    if(carts[0].menu.ingredients.length > 0){
-                        for(let i=0;i<carts[0].menu.ingredients.length;i++){
-                            let caloriesTotal = carts[0].menu.ingredients[i].calorie * carts[0].quantity;
-                            calories += caloriesTotal;
-                        }
-                    }else if(carts[0].menu.ingredients.length === 1){
-                        calories = carts[0].menu.ingredients[0].calories;
-                    }
+                    calories = this.calculateCalories(carts[0])
                 }
 
                 calories = parseFloat(calories).toFixed(2);
@@ -100,10 +86,23 @@ class CartService {
         })
     }
 
+    static calculateCalories(cart){
+        let calories = 0;
+        if(cart.menu.ingredients.length > 0){
+            for(let i=0;i<cart.menu.ingredients.length;i++){
+                let caloriesTotal = cart.menu.ingredients[i].calorie * cart.quantity;
+                calories += caloriesTotal
+            }
+        }else if(cart.menu.ingredients.length === 1){
+            calories = cart.menu.ingredients[0].calories * cart.quantity;
+        }
+
+        return calories;
+    }
+
     static removeCart(cartId, user) {
         return new Promise(async (resolve, reject) => {
             try {
-                console.log(cartId)
                 const cart = await Cart.findOne({ 
                     _id: cartId,
                     user: user._id
