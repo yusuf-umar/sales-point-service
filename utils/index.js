@@ -1,6 +1,9 @@
 const RandExp = require("randexp");
 const dotenv = require('dotenv').config();
-const mailjet = require('node-mailjet').connect('9c50938391264148b6be5f5295e858aa', '4d2360bc6de8bd7e37a98a025cdaae41')
+const mailjetAPIKEY1 = process.env.MAILJETAPIKEY1;
+const mailjetAPIKEY2 = process.env.MAILJETAPIKEY2;
+
+const mailjet = require('node-mailjet').connect(mailjetAPIKEY1, mailjetAPIKEY2)
 const AWS = require('aws-sdk');
 const multer = require("multer")
 const multerS3 = require("multer-s3")
@@ -43,8 +46,8 @@ const mailSender = async (to, subject, text, html) => {
       "Messages": [
         {
           "From": {
-            "Email": "fafowora.oluwatobiloba@academicianhelp.com",
-            "Name": "fafowora"
+            "Email": "sebastianlogan520@gmail.com",
+            "Name": "Admin"
           },
           "To": [
             to
