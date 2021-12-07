@@ -42,7 +42,7 @@ class MenuService {
     static getAllMenu(skip, pageSize, filter = {}) {
         return new Promise(async (resolve, reject) => {
             try {
-                const menus = await Menu.find(filter).populate('category shop ingredients')
+                const menus = await Menu.find(filter).populate('category shop').populate({path: 'ingredients',populate:{path:'ingredient'}})
 
                 const total = await Menu.find(filter).countDocuments()
 
@@ -79,7 +79,7 @@ class MenuService {
     static getMenu(filter) {
         return new Promise(async (resolve, reject) => {
             try {
-                const menu = await Menu.findOne(filter).populate('category ingredients shop');
+                const menu = await Menu.findOne(filter).populate('category shop').populate({path: 'ingredients',populate:{path:'ingredient'}});
 
                 if (!menu) {
                     return reject({ statusCode: 404, msg: MSG_TYPES.NOT_FOUND })

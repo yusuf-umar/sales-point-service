@@ -12,16 +12,6 @@ const ingredientSchema = new mongoose.Schema(
             type: String,
             required: true,
             index: true
-        },
-        calorie:{
-            type: Number,
-            required: true,
-            min: 0,
-            default: 0.0
-        },
-        calorieUnit:{
-            type: String,
-            default: "gram"
         }
     },
     {

@@ -54,7 +54,8 @@ class CartService {
     static getCarts(filter) {
         return new Promise(async (resolve, reject) => {
             try {
-                const carts = await Cart.find(filter).populate({path: 'menu',populate:{path:'shop ingredients category'}})
+                const carts = await Cart.find(filter)
+                .populate({path: 'menu',populate:{path:'shop category'},populate:{path: 'ingredients',populate:{path:'ingredient'}}})
 
                 let total = 0;
                 let calories = 0;

@@ -11,12 +11,12 @@ const assestSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    name:{
-        type: String, 
+    name: {
+        type: String,
         required: true
     },
-    fieldName:{ 
-        type: String, 
+    fieldName: {
+        type: String,
         required: true
     },
     default: {
@@ -25,6 +25,23 @@ const assestSchema = new mongoose.Schema({
     }
 })
 
+const ingredients = new mongoose.Schema({
+    ingredient: {
+        type: objectId,
+        required: true,
+        ref: 'Ingredient'
+    },
+    calorie: {
+        type: Number,
+        required: true,
+        min: 0,
+        default: 0.0
+    },
+    calorieUnit: {
+        type: String,
+        default: "kcal"
+    }
+})
 
 const menuSchema = new mongoose.Schema(
     {
@@ -46,33 +63,23 @@ const menuSchema = new mongoose.Schema(
         description: {
             type: String,
             required: true,
-            maxlength: 50
         },
-        currency:{
+        currency: {
             type: String,
             default: getSymbolFromCurrency('GBP')
         },
-        ingredients: [{
-            type: objectId,
-            required: true,
-            ref: 'Ingredient'
-        }],
+        ingredients: [ingredients],
         category: {
             type: objectId,
             required: true,
             ref: 'Category'
         },
-        price:{
+        price: {
             type: Number,
             required: true,
             min: 0
         },
-        quantity:{
-            type: Number,
-            required: true,
-            min: 0
-        },
-        status:{
+        status: {
             type: String,
             emun: ['avaiable', 'sold-out']
         },

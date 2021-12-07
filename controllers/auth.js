@@ -93,8 +93,7 @@ exports.reset = async (req, res, next) => {
         const msg = await AuthService.reset(email, token);
 
         res.redirect('http://localhost:4200/forgot-password/' + token + "/" + email);
-
-        JsonResponse(res, 200, MSG_TYPES.CREATED)
+        
     } catch (error) {
         JsonResponse(res, error.statusCode, error.msg)
         next(error)
