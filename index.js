@@ -7,6 +7,7 @@ const Table = require('cli-table');
 const listAllRoutes = require('express-list-endpoints');
 const { JsonResponse } = require("./lib/apiResponse");
 require('dotenv').config()
+const port = process.env.PORT || 3000;
 
 const app = express();
 app.use(morgan('tiny'));
@@ -16,7 +17,8 @@ app.use(cors());
 require('./startup/routes')(app);
 require('./startup/db')()
 
-const port = process.env.PORT || 3000;
+
+
 
 
 let routesList = listAllRoutes(app);

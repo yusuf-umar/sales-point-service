@@ -26,7 +26,7 @@ class UserService {
 
                 const token = GenerateCode(16);
                 newUser.rememberToken.token = token;
-                newUser.rememberToken.expiredDate = moment().add(20, "minutes");
+                // newUser.rememberToken.expiredDate = moment().add(20, "minutes");
 
                 //email verification link
                 let to = {

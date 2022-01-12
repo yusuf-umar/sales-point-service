@@ -5,7 +5,7 @@ require('dotenv').config();
 const jwtSecret = process.env.JWT_SECRET
 
 const ROLES = {
-    ADMIN: "administator",
+    ADMIN: "administrator",
     USER: "user"
 }
 

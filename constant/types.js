@@ -1,6 +1,7 @@
 const MSG_TYPES = Object.freeze({
     ACCOUNT_CREATED: "Account Successfully Created.",
     ACCOUNT_EXIST: "Account Already Exist.",
+    PHONE_EXIST: "Phone Number Already Exist.",
     EXIST: "Resource Already Exist.",
     LOGGED_IN: "Successfully logged in",
     DELETED: "Resource Deleted Successfully",

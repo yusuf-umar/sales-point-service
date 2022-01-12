@@ -18,7 +18,7 @@ function validateUser(body) {
         name: Joi.string().required(),
         phoneNumber: Joi.string().required(),
         gender: Joi.string().valid('M','F').required(),
-        role: Joi.string().valid('administator','user').required()
+        role: Joi.string().valid('administrator','user').required()
     });
 
     return userSchema.validate(body)

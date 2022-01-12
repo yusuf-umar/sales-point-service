@@ -46,7 +46,7 @@ const mailSender = async (to, subject, text, html) => {
       "Messages": [
         {
           "From": {
-            "Email": "sebastianlogan520@gmail.com",
+            "Email":process.env.MAILJETEMAIL,
             "Name": "Admin"
           },
           "To": [

@@ -6,10 +6,13 @@ const dbURL = process.env.MONGO_URL
 
 
 module.exports = function(){
-    mongoose.connect(dbURL,{
+    mongoose.connect('mongodb://localhost/mystore',{
        useNewUrlParser: true,
        useUnifiedTopology: true,
     })
-    .then(() => winston.info('-------Successfully connected to MongoDB-------'))
+    .then(() => winston.info('Successfully connected to MongoDB...!!'))
     .catch((err) => console.log(err))
 }
+
+
+
